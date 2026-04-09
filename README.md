@@ -1,70 +1,167 @@
-# Getting Started with Create React App
+# Travel Mundo — Guide d'installation et de démarrage
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation rapide
 
-## Available Scripts
+```bash
+# 1. Créer le projet
+npx create-react-app travel-mundo
+cd travel-mundo
 
-In the project directory, you can run:
+# 2. Installer toutes les dépendances
+npm install react-router-dom axios react-icons react-toastify recharts jspdf html2canvas framer-motion
 
-### `npm start`
+# 3. Lancer le projet
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Structure des fichiers — où coller quoi
 
-### `npm test`
+```
+src/
+├── index.css           ← Styles globaux (couleurs bleues, boutons, utilitaires)
+├── index.js            ← Point d'entrée React (ne pas modifier)
+├── App.jsx             ← Routeur principal
+│
+├── context/
+│   └── AuthContext.jsx ← Gestion session admin
+│
+├── services/
+│   ├── api.js          ← Configuration Axios
+│   ├── auth.js         ← Fonctions login/logout API
+│   ├── dossiers.js     ← Données dossiers + appels API
+│   └── scoring.js      ← Algorithme de scoring IA
+│
+├── components/
+│   ├── Navbar.jsx           ← Barre de navigation (sticky)
+│   ├── Footer.jsx           ← Pied de page
+│   ├── Chatbot.jsx          ← Assistant flottant en bas à droite
+│   ├── HeroSection.jsx      ← Section hero réutilisable
+│   ├── ServiceCard.jsx      ← Carte service réutilisable
+│   ├── StatusTracker.jsx    ← Timeline de suivi réutilisable
+│   ├── ScoreGauge.jsx       ← Jauge circulaire de score
+│   └── ProtectedRoute.jsx   ← Protection page Dashboard
+│
+└── pages/
+    ├── Home.jsx         → /
+    ├── About.jsx        → /a-propos
+    ├── Services.jsx     → /services
+    ├── Contact.jsx      → /contact
+    ├── VisaMap.jsx      → /visa-map
+    ├── VisaScoring.jsx  → /visa-scoring
+    ├── TrackRequest.jsx → /suivi
+    └── Dashboard.jsx    → /dashboard (protégé)
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Identifiants de démonstration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+Email    : admin@travelmundo.tn
+Password : admin123
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Pour tester le suivi de dossier, utilisez :
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `TM-2024-001` → En cours de traitement
+- `TM-2024-002` → Terminé
+- `TM-2024-003` → En attente
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Erreurs fréquentes et solutions
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ❌ "Cannot find module 'react-icons/fi'"
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm install react-icons
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### ❌ "Cannot find module 'recharts'"
 
-## Learn More
+```bash
+npm install recharts
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### ❌ "Cannot find module 'react-router-dom'"
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install react-router-dom
+```
 
-### Code Splitting
+### ❌ "Module not found: Can't resolve '../context/AuthContext'"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Vérifiez que le fichier est dans `src/context/AuthContext.jsx`
+et que le chemin d'import est correct depuis le composant.
 
-### Analyzing the Bundle Size
+### ❌ Page blanche au lancement
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Ouvrez la console du navigateur (F12) et regardez l'erreur exacte.
+Souvent c'est un import manquant ou un chemin incorrect.
 
-### Making a Progressive Web App
+### ❌ "Expected to import a component..."
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Dans App.jsx, vérifiez que tous les imports pointent vers
+les bons chemins (./pages/Home, ./components/Navbar, etc.)
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Variables d'environnement (.env)
 
-### Deployment
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_NAME=Travel Mundo
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+⚠️ Toujours préfixer les variables par `REACT_APP_` pour
+que React les reconnaisse. Redémarrez `npm start` après
+avoir modifié le fichier .env.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Connexion au backend (quand il sera prêt)
+
+Dans `src/services/dossiers.js`, remplacez les données
+FAKE_DOSSIERS par de vrais appels API :
+
+```js
+// Avant (simulation)
+export const FAKE_DOSSIERS = { ... }
+
+// Après (avec backend)
+export async function getDossierByRef(reference) {
+  const { data } = await api.get(`/dossiers/${reference}`);
+  return data;
+}
+```
+
+Dans `src/context/AuthContext.jsx`, remplacez la
+simulation par un appel API réel :
+
+```js
+// Avant
+if (email === 'admin@...' && password === 'admin123') { ... }
+
+// Après
+const { data } = await api.post('/auth/login', { email, password });
+setUser(data.user);
+localStorage.setItem('tm_user', JSON.stringify(data));
+```
+
+---
+
+## Prochaines étapes (backend)
+
+1. **Node.js + Express** ou **Django** pour l'API REST
+2. **MongoDB** ou **PostgreSQL** pour la base de données
+3. **Endpoints à créer :**
+   - `POST /api/auth/login`
+   - `GET  /api/dossiers/:reference`
+   - `GET  /api/dossiers` (admin)
+   - `PATCH /api/dossiers/:id/statut`
+   - `POST /api/scoring`
+   - `POST /api/contact`
+4. **Gmail API** pour l'automatisation des emails agents
+5. **node-cron** pour les rappels passeport (6 mois / 1 mois)
