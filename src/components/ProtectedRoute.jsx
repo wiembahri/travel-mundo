@@ -10,16 +10,15 @@ export default function ProtectedRoute({ children }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Si déjà connecté, afficher la page protégée directement
   if (user) return children;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    await new Promise((r) => setTimeout(r, 600)); // simulation délai réseau
+    await new Promise((r) => setTimeout(r, 600));
     const ok = login(email, password);
-    if (!ok) setError("Email ou mot de passe incorrect.");
+    if (!ok) setError("Incorrect email or password.");
     setLoading(false);
   };
 
@@ -45,7 +44,6 @@ export default function ProtectedRoute({ children }) {
           border: "1px solid var(--gray-200)",
         }}
       >
-        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
           <div
             style={{
@@ -61,15 +59,12 @@ export default function ProtectedRoute({ children }) {
           >
             <FiLock size={24} color="var(--blue-600)" />
           </div>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: 6 }}>
-            Espace administrateur
-          </h2>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: 6 }}>Admin Area</h2>
           <p style={{ fontSize: 14, color: "var(--gray-600)" }}>
-            Connectez-vous pour accéder au tableau de bord
+            Sign in to access the dashboard
           </p>
         </div>
 
-        {/* Astuce de test */}
         <div
           style={{
             background: "var(--blue-50)",
@@ -81,24 +76,23 @@ export default function ProtectedRoute({ children }) {
             color: "var(--blue-800)",
           }}
         >
-          <strong>Démonstration :</strong>
+          <strong>Demo access:</strong>
           <br />
-          Email : <code>admin@travelmundo.tn</code>
+          Email: <code>admin@travelmundo.tn</code>
           <br />
-          Mot de passe : <code>admin123</code>
+          Password: <code>admin123</code>
         </div>
 
-        {/* Formulaire */}
         <form
           onSubmit={handleLogin}
           style={{ display: "flex", flexDirection: "column", gap: 18 }}
         >
           <div>
-            <label className="label">Adresse email</label>
+            <label className="label">Email address</label>
             <input
               type="email"
               className="input-field"
-              placeholder="votre@email.com"
+              placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -106,7 +100,7 @@ export default function ProtectedRoute({ children }) {
           </div>
 
           <div>
-            <label className="label">Mot de passe</label>
+            <label className="label">Password</label>
             <div style={{ position: "relative" }}>
               <input
                 type={showPwd ? "text" : "password"}
@@ -157,7 +151,7 @@ export default function ProtectedRoute({ children }) {
             disabled={loading}
             style={{ width: "100%", justifyContent: "center", marginTop: 4 }}
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
       </div>

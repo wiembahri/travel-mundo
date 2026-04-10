@@ -4,12 +4,12 @@ import { FiMenu, FiX, FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 
 const NAV_LINKS = [
-  { to: "/", label: "Accueil" },
-  { to: "/a-propos", label: "À propos" },
+  { to: "/", label: "Home" },
+  { to: "/a-propos", label: "About" },
   { to: "/services", label: "Services" },
-  { to: "/visa-map", label: "Carte Visa" },
-  { to: "/visa-scoring", label: "Scoring IA" },
-  { to: "/suivi", label: "Suivi dossier" },
+  { to: "/visa-map", label: "Visa Map" },
+  { to: "/visa-scoring", label: "Application Review" },
+  { to: "/suivi", label: "Track Application" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -41,7 +41,7 @@ export default function Navbar() {
           height: 68,
         }}
       >
-        {/* ── Logo ── */}
+        {/* Logo */}
         <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
@@ -81,12 +81,12 @@ export default function Navbar() {
             <div
               style={{ fontSize: 10, color: "var(--gray-500)", marginTop: -2 }}
             >
-              Visa & Passeport
+              Visa, Passport, ETA / ESTA
             </div>
           </div>
         </Link>
 
-        {/* ── Desktop Links ── */}
+        {/* Desktop Links */}
         <ul
           style={{
             display: "flex",
@@ -96,41 +96,45 @@ export default function Navbar() {
           }}
           className="nav-links-desktop"
         >
-          {NAV_LINKS.map((l) => (
-            <li key={l.to}>
+          {NAV_LINKS.map((link) => (
+            <li key={link.to}>
               <Link
-                to={l.to}
+                to={link.to}
                 style={{
                   padding: "7px 13px",
                   borderRadius: 8,
                   fontSize: 14,
                   fontWeight: 500,
                   fontFamily: "var(--font-heading)",
-                  color: isActive(l.to) ? "var(--blue-600)" : "var(--gray-600)",
-                  background: isActive(l.to) ? "var(--blue-50)" : "transparent",
+                  color: isActive(link.to)
+                    ? "var(--blue-600)"
+                    : "var(--gray-600)",
+                  background: isActive(link.to)
+                    ? "var(--blue-50)"
+                    : "transparent",
                   transition: "all 0.15s",
                   display: "block",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isActive(l.to)) {
+                  if (!isActive(link.to)) {
                     e.target.style.color = "var(--blue-600)";
                     e.target.style.background = "var(--gray-100)";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (!isActive(l.to)) {
+                  if (!isActive(link.to)) {
                     e.target.style.color = "var(--gray-600)";
                     e.target.style.background = "transparent";
                   }
                 }}
               >
-                {l.label}
+                {link.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* ── Right actions ── */}
+        {/* Right actions */}
         <div
           style={{ display: "flex", gap: 10, alignItems: "center" }}
           className="nav-links-desktop"
@@ -156,7 +160,7 @@ export default function Navbar() {
                 className="btn-ghost"
                 style={{ padding: "8px 16px", fontSize: 13 }}
               >
-                <FiLogOut size={14} /> Déconnexion
+                <FiLogOut size={14} /> Log out
               </button>
             </>
           ) : (
@@ -165,12 +169,12 @@ export default function Navbar() {
               className="btn-primary"
               style={{ padding: "9px 20px", fontSize: 14 }}
             >
-              <FiLogIn size={15} /> Espace Admin
+              <FiLogIn size={15} /> Admin Area
             </Link>
           )}
         </div>
 
-        {/* ── Mobile burger ── */}
+        {/* Mobile burger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="nav-burger"
@@ -187,7 +191,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* ── Mobile menu ── */}
+      {/* Mobile menu */}
       {menuOpen && (
         <div
           style={{
@@ -196,22 +200,24 @@ export default function Navbar() {
             padding: "8px 24px 20px",
           }}
         >
-          {NAV_LINKS.map((l) => (
+          {NAV_LINKS.map((link) => (
             <Link
-              key={l.to}
-              to={l.to}
+              key={link.to}
+              to={link.to}
               onClick={() => setMenuOpen(false)}
               style={{
                 display: "block",
                 padding: "11px 0",
                 borderBottom: "1px solid var(--gray-100)",
-                color: isActive(l.to) ? "var(--blue-600)" : "var(--gray-700)",
+                color: isActive(link.to)
+                  ? "var(--blue-600)"
+                  : "var(--gray-700)",
                 fontWeight: 500,
                 fontSize: 15,
                 fontFamily: "var(--font-heading)",
               }}
             >
-              {l.label}
+              {link.label}
             </Link>
           ))}
           <div style={{ marginTop: 16 }}>
@@ -221,7 +227,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               style={{ width: "100%", justifyContent: "center" }}
             >
-              <FiLogIn size={15} /> Espace Admin
+              <FiLogIn size={15} /> Admin Area
             </Link>
           </div>
         </div>

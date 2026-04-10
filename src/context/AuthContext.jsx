@@ -1,14 +1,22 @@
-﻿import { createContext, useContext, useState } from "react";
+﻿import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const saved = localStorage.getItem("tm_user");
+    if (saved) {
+      try {
+        setUser(JSON.parse(saved));
+      } catch {}
+    }
+  }, []);
+
   const login = (email, password) => {
-    // Simulation — remplacez par un vrai appel API
     if (email === "admin@travelmundo.tn" && password === "admin123") {
-      const userData = { email, role: "admin", nom: "Administrateur" };
+      const userData = { email, role: "admin", nom: "Administrator" };
       setUser(userData);
       localStorage.setItem("tm_user", JSON.stringify(userData));
       return true;

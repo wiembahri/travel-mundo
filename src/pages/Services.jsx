@@ -2,102 +2,72 @@
 
 const SERVICES = [
   {
-    titre: "Visa Schengen",
+    title: "Schengen Visa",
     description:
-      "Court séjour jusqu'à 90 jours dans les 27 pays de l'espace Schengen.",
+      "Support for Schengen visa applications, including information review, document preparation, and step-by-step guidance throughout the process.",
     docs: [
-      "Passeport valide 6 mois minimum",
-      "Formulaire de demande Schengen",
-      "Photos biométriques récentes",
-      "Justificatif d'hébergement",
-      "Assurance voyage (30 000 €)",
-      "Relevés bancaires 3 derniers mois",
+      "Valid passport",
+      "Application form",
+      "Recent passport photo",
+      "Supporting travel documents",
+      "Financial and administrative documents",
     ],
-    delai: "15 jours ouvrables",
-    frais: "80 €",
-    lien: "https://france-visas.gouv.fr",
-    couleur: "#2563EB",
-    bg: "#EFF6FF",
+    delay: "Depends on consular processing",
+    fees: "Varies by application",
+    link: "https://france-visas.gouv.fr",
+    color: "var(--blue-600)",
+    bg: "var(--blue-50)",
   },
   {
-    titre: "Passeport biométrique",
-    description: "Demande ou renouvellement de passeport biométrique tunisien.",
+    title: "U.S. Visa",
+    description:
+      "Assistance with U.S. visa applications depending on the purpose of travel, including tourism, business, transit, or study.",
     docs: [
-      "Acte de naissance original",
-      "CIN en cours de validité",
-      "Ancien passeport (renouvellement)",
-      "2 photos d'identité récentes",
-      "Formulaire officiel rempli",
+      "Valid passport",
+      "Personal information",
+      "Travel purpose details",
+      "Supporting documents",
+      "Additional documents depending on profile",
     ],
-    delai: "10 jours ouvrables",
-    frais: "Variable selon urgence",
-    lien: "https://mypassportcenter.com/",
-    couleur: "#7C3AED",
-    bg: "#FDF4FF",
+    delay: "Depends on availability and processing time",
+    fees: "Varies by application",
+    link: "https://travel.state.gov",
+    color: "var(--blue-700)",
+    bg: "var(--blue-50)",
   },
   {
-    titre: "Visa USA (B1/B2)",
-    description: "Visa non-immigrant pour affaires ou tourisme aux États-Unis.",
+    title: "Passport",
+    description:
+      "Assistance with passport-related applications, including new applications, renewals, certain corrections, and preparation before official submission.",
     docs: [
-      "Formulaire DS-160 complété",
-      "Confirmation de RDV ambassade",
-      "Preuve de situation financière",
-      "Preuves de liens avec le pays",
-      "Passeport biométrique valide",
+      "Identity document",
+      "Previous passport if renewing",
+      "Passport photo",
+      "Required administrative documents",
+      "Information needed for processing",
     ],
-    delai: "30 à 60 jours",
-    frais: "185 USD",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
-    couleur: "#DC2626",
-    bg: "#FEF2F2",
+    delay: "Depends on the official procedure",
+    fees: "Varies by service",
+    link: "https://mypassportcenter.com/",
+    color: "var(--blue-800)",
+    bg: "var(--blue-50)",
   },
   {
-    titre: "Visa Canada",
-    description: "Visa visiteur ou autorisation d'étude pour le Canada.",
+    title: "ETA / ESTA",
+    description:
+      "Guided support for electronic travel authorizations, including form completion, information review, and submission assistance based on traveler eligibility.",
     docs: [
-      "Formulaire IMM 5257",
-      "Preuve de fonds suffisants",
-      "Invitation (si applicable)",
-      "Biométrie au centre VFS",
-      "Passeport valide",
+      "Valid biometric passport",
+      "Personal information",
+      "Travel purpose",
+      "Required contact details",
+      "Travel information",
     ],
-    delai: "28 jours ouvrables",
-    frais: "100 CAD",
-    lien: "https://www.canada.ca/fr/immigration",
-    couleur: "#D97706",
-    bg: "#FFFBEB",
-  },
-  {
-    titre: "Visa Royaume-Uni",
-    description: "Standard Visitor Visa pour le Royaume-Uni post-Brexit.",
-    docs: [
-      "Passeport biométrique",
-      "Formulaire en ligne Gov.uk",
-      "Relevé bancaire 3 mois",
-      "Lettre d'invitation ou réservation",
-      "Biométrie UK Visa Center",
-    ],
-    delai: "15 à 20 jours",
-    frais: "115 GBP",
-    lien: "https://www.gov.uk/apply-uk-visa",
-    couleur: "#0891B2",
-    bg: "#ECFEFF",
-  },
-  {
-    titre: "Visa Australie",
-    description: "eVisitor ou Visitor Visa pour l'Australie via ImmiAccount.",
-    docs: [
-      "Passeport valide 6 mois",
-      "Formulaire en ligne ImmiAccount",
-      "Preuve de séjour",
-      "Capacité financière",
-      "Assurance santé",
-    ],
-    delai: "20 à 30 jours",
-    frais: "145 AUD",
-    lien: "https://immi.homeaffairs.gov.au",
-    couleur: "#059669",
-    bg: "#ECFDF5",
+    delay: "Usually processed quickly",
+    fees: "Varies by destination",
+    link: "https://esta.cbp.dhs.gov/",
+    color: "var(--blue-600)",
+    bg: "var(--blue-50)",
   },
 ];
 
@@ -113,38 +83,16 @@ export default function Services() {
       <div className="container">
         {/* Header */}
         <div className="section-header">
-          <span className="badge">Services Travel Mundo</span>
-          <h1 className="section-title">Nos services visa & passeport</h1>
+          <span className="badge">Our Services</span>
+          <h1 className="section-title">Our application support services</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Accédez directement aux portails officiels depuis notre plateforme.
-            Nous vous guidons sur les documents requis pour chaque destination.
+            Travel Mundo supports clients with Schengen visa, U.S. visa,
+            passport, and ETA / ESTA applications through a clear and guided
+            process.
           </p>
         </div>
 
-        {/* Bannière information */}
-        <div
-          style={{
-            background: "var(--blue-50)",
-            border: "1px solid var(--blue-200)",
-            borderRadius: "var(--radius-md)",
-            padding: "16px 24px",
-            marginBottom: 40,
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 12,
-            fontSize: 14,
-            color: "var(--blue-800)",
-          }}
-        >
-          <span style={{ fontSize: 18 }}>ℹ️</span>
-          <span>
-            <strong>Architecture non-intrusive :</strong> Travel Mundo ne
-            modifie aucun portail officiel. Les boutons "Accéder au portail"
-            vous redirigent vers les sites gouvernementaux officiels.
-          </span>
-        </div>
-
-        {/* Grille services */}
+        {/* Services grid */}
         <div
           style={{
             display: "grid",
@@ -152,7 +100,7 @@ export default function Services() {
             gap: 24,
           }}
         >
-          {SERVICES.map((s, i) => (
+          {SERVICES.map((service, i) => (
             <div
               key={i}
               style={{
@@ -174,10 +122,10 @@ export default function Services() {
                 e.currentTarget.style.boxShadow = "var(--shadow-sm)";
               }}
             >
-              {/* Bandeau couleur */}
+              {/* Top section */}
               <div
                 style={{
-                  background: s.couleur,
+                  background: service.color,
                   padding: "20px 24px",
                   color: "white",
                 }}
@@ -190,16 +138,15 @@ export default function Services() {
                     marginBottom: 6,
                   }}
                 >
-                  {s.titre}
+                  {service.title}
                 </h3>
                 <p style={{ fontSize: 13, opacity: 0.88, lineHeight: 1.5 }}>
-                  {s.description}
+                  {service.description}
                 </p>
               </div>
 
-              {/* Corps */}
+              {/* Body */}
               <div style={{ padding: "20px 24px", flexGrow: 1 }}>
-                {/* Documents */}
                 <p
                   style={{
                     fontSize: 12,
@@ -210,10 +157,11 @@ export default function Services() {
                     marginBottom: 12,
                   }}
                 >
-                  Documents requis
+                  Required items
                 </p>
+
                 <ul style={{ listStyle: "none", marginBottom: 18 }}>
-                  {s.docs.map((d, j) => (
+                  {service.docs.map((item, j) => (
                     <li
                       key={j}
                       style={{
@@ -227,20 +175,19 @@ export default function Services() {
                     >
                       <FiCheck
                         size={13}
-                        color={s.couleur}
+                        color={service.color}
                         style={{ marginTop: 2, flexShrink: 0 }}
                       />
-                      {d}
+                      {item}
                     </li>
                   ))}
                 </ul>
 
-                {/* Infos rapides */}
                 <div style={{ display: "flex", gap: 10 }}>
                   <div
                     style={{
                       flex: 1,
-                      background: s.bg,
+                      background: service.bg,
                       borderRadius: 8,
                       padding: "8px 12px",
                     }}
@@ -255,18 +202,19 @@ export default function Services() {
                         marginBottom: 2,
                       }}
                     >
-                      <FiClock size={11} /> Délai
+                      <FiClock size={11} /> Processing
                     </div>
                     <p
                       style={{
                         fontSize: 13,
                         fontWeight: 700,
-                        color: s.couleur,
+                        color: service.color,
                       }}
                     >
-                      {s.delai}
+                      {service.delay}
                     </p>
                   </div>
+
                   <div
                     style={{
                       flex: 1,
@@ -282,7 +230,7 @@ export default function Services() {
                         marginBottom: 2,
                       }}
                     >
-                      Frais consulaires
+                      Fees
                     </div>
                     <p
                       style={{
@@ -291,7 +239,7 @@ export default function Services() {
                         color: "var(--gray-700)",
                       }}
                     >
-                      {s.frais}
+                      {service.fees}
                     </p>
                   </div>
                 </div>
@@ -300,24 +248,37 @@ export default function Services() {
               {/* Footer */}
               <div style={{ padding: "0 24px 20px", display: "flex", gap: 10 }}>
                 <a
-                  href={s.lien}
+                  href={service.link}
                   target="_blank"
                   rel="noreferrer"
                   className="btn-primary"
                   style={{
                     flex: 1,
                     justifyContent: "center",
-                    background: s.couleur,
+                    background: service.color,
                     fontSize: 13,
                     padding: "10px 16px",
                   }}
                 >
-                  <FiExternalLink size={14} /> Portail officiel
+                  <FiExternalLink size={14} /> Access service
                 </a>
               </div>
             </div>
           ))}
         </div>
+
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: 13,
+            color: "var(--gray-500)",
+            marginTop: 28,
+          }}
+        >
+          Travel Mundo is a private assistance service and is not affiliated
+          with any government authority. Applications are completed through the
+          relevant official offices or platforms.
+        </p>
       </div>
     </div>
   );

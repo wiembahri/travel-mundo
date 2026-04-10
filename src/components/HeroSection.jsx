@@ -1,7 +1,4 @@
-﻿// src/components/HeroSection.jsx
-// Composant réutilisable : section hero pour les pages intérieures
-
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
 
 export default function HeroSection({
@@ -25,7 +22,6 @@ export default function HeroSection({
         overflow: "hidden",
       }}
     >
-      {/* Cercles décoratifs */}
       <div
         style={{
           position: "absolute",
@@ -129,6 +125,7 @@ export default function HeroSection({
                 {ctaLabel} <FiArrowRight />
               </Link>
             )}
+
             {ctaSecondLabel && ctaSecondTo && (
               <Link
                 to={ctaSecondTo}

@@ -4,50 +4,51 @@ import {
   FiDollarSign,
   FiFolder,
   FiAward,
-  FiAlertCircle,
   FiCheckCircle,
-  FiDownload,
   FiRefreshCw,
 } from "react-icons/fi";
 import { calculerScoreVisa } from "../services/scoring";
 
-const NATIONALITES = [
-  "Tunisie",
-  "Maroc",
-  "Algérie",
+const NATIONALITIES = [
+  "Tunisia",
+  "Morocco",
+  "Algeria",
   "France",
-  "Belgique",
+  "Belgium",
   "Canada",
-  "Sénégal",
+  "Senegal",
   "Côte d'Ivoire",
 ];
+
 const DESTINATIONS = [
   "France (Schengen)",
-  "États-Unis",
+  "United States",
   "Canada",
-  "Royaume-Uni",
-  "Australie",
-  "Allemagne (Schengen)",
-  "Italie (Schengen)",
+  "United Kingdom",
+  "Australia",
+  "Germany (Schengen)",
+  "Italy (Schengen)",
 ];
-const TYPES_VISA = ["Tourisme", "Affaires", "Études", "Famille", "Transit"];
-const EMPLOIS = [
-  "CDI",
-  "CDD",
-  "Indépendant",
-  "Étudiant",
-  "Retraité",
-  "Sans emploi",
+
+const VISA_TYPES = ["Tourism", "Business", "Study", "Family", "Transit"];
+const EMPLOYMENT_OPTIONS = [
+  "Permanent",
+  "Temporary",
+  "Self-employed",
+  "Student",
+  "Retired",
+  "Unemployed",
 ];
-const DOCS_LISTE = [
-  "Passeport valide +6 mois",
-  "Relevé bancaire 3 mois",
-  "Justificatif d'emploi / contrat",
-  "Assurance voyage",
-  "Réservation hôtel / hébergement",
-  "Billet aller-retour",
-  "Certificat de travail ou inscription",
-  "Invitation officielle",
+
+const DOCS_LIST = [
+  "Valid passport (6+ months)",
+  "Bank statements",
+  "Employment proof / contract",
+  "Travel insurance",
+  "Hotel / accommodation details",
+  "Round-trip ticket",
+  "Enrollment or work certificate",
+  "Official invitation",
 ];
 
 const FORM_INITIAL = {
@@ -62,11 +63,12 @@ const FORM_INITIAL = {
 
 function StepIndicator({ step }) {
   const steps = [
-    { num: 1, label: "Profil", icon: <FiUser size={14} /> },
+    { num: 1, label: "Profile", icon: <FiUser size={14} /> },
     { num: 2, label: "Finances", icon: <FiDollarSign size={14} /> },
     { num: 3, label: "Documents", icon: <FiFolder size={14} /> },
-    { num: 4, label: "Résultat", icon: <FiAward size={14} /> },
+    { num: 4, label: "Review", icon: <FiAward size={14} /> },
   ];
+
   return (
     <div
       style={{
@@ -94,23 +96,16 @@ function StepIndicator({ step }) {
                 height: 40,
                 borderRadius: "50%",
                 background:
-                  step > s.num
-                    ? "var(--blue-600)"
-                    : step === s.num
-                      ? "var(--blue-600)"
-                      : "var(--gray-200)",
+                  step >= s.num ? "var(--blue-600)" : "var(--gray-200)",
                 color: step >= s.num ? "white" : "var(--gray-500)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                transition: "all 0.3s",
                 border:
                   step === s.num
                     ? "3px solid var(--blue-200)"
                     : "3px solid transparent",
-                fontFamily: "var(--font-heading)",
                 fontWeight: 700,
-                fontSize: 15,
               }}
             >
               {step > s.num ? <FiCheckCircle size={16} /> : s.num}
@@ -125,6 +120,7 @@ function StepIndicator({ step }) {
               {s.label}
             </span>
           </div>
+
           {i < steps.length - 1 && (
             <div
               style={{
@@ -134,7 +130,6 @@ function StepIndicator({ step }) {
                 marginTop: -18,
                 background:
                   step > s.num ? "var(--blue-400)" : "var(--gray-200)",
-                transition: "background 0.3s",
               }}
             />
           )}
@@ -147,26 +142,26 @@ function StepIndicator({ step }) {
 export default function VisaScoring() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(FORM_INITIAL);
-  const [resultat, setResultat] = useState(null);
+  const [result, setResult] = useState(null);
 
   const setField = (key, val) => setForm((f) => ({ ...f, [key]: val }));
-  const toggleDoc = (d) =>
+  const toggleDoc = (doc) =>
     setField(
       "docs",
-      form.docs.includes(d)
-        ? form.docs.filter((x) => x !== d)
-        : [...form.docs, d],
+      form.docs.includes(doc)
+        ? form.docs.filter((x) => x !== doc)
+        : [...form.docs, doc],
     );
 
-  const analyser = () => {
+  const reviewApplication = () => {
     const r = calculerScoreVisa(form);
-    setResultat(r);
+    setResult(r);
     setStep(4);
   };
 
-  const recommencer = () => {
+  const reset = () => {
     setForm(FORM_INITIAL);
-    setResultat(null);
+    setResult(null);
     setStep(1);
   };
 
@@ -183,11 +178,11 @@ export default function VisaScoring() {
     >
       <div className="container">
         <div className="section-header">
-          <span className="badge">Intelligence Artificielle</span>
-          <h1 className="section-title">Scoring Visa Readiness</h1>
+          <span className="badge">Application Review</span>
+          <h1 className="section-title">Review your application profile</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Analysez votre profil en 3 étapes et recevez un score personnalisé
-            avec des recommandations concrètes.
+            Fill in the required details and receive a general review with
+            recommendations to strengthen your application.
           </p>
         </div>
 
@@ -204,7 +199,6 @@ export default function VisaScoring() {
             border: "1px solid var(--gray-200)",
           }}
         >
-          {/* ── Étape 1 : Profil ── */}
           {step === 1 && (
             <div>
               <h3
@@ -218,29 +212,30 @@ export default function VisaScoring() {
                   color: "var(--blue-700)",
                 }}
               >
-                <FiUser /> Votre profil de voyage
+                <FiUser /> Travel profile
               </h3>
+
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 20 }}
               >
                 {[
                   {
-                    label: "Votre nationalité",
+                    label: "Nationality",
                     key: "nationalite",
-                    options: NATIONALITES,
-                    placeholder: "Sélectionner votre nationalité",
+                    options: NATIONALITIES,
+                    placeholder: "Select your nationality",
                   },
                   {
-                    label: "Destination souhaitée",
+                    label: "Destination",
                     key: "destination",
                     options: DESTINATIONS,
-                    placeholder: "Sélectionner la destination",
+                    placeholder: "Select a destination",
                   },
                   {
-                    label: "Type de visa",
+                    label: "Travel purpose",
                     key: "typeVisa",
-                    options: TYPES_VISA,
-                    placeholder: "Sélectionner le type de visa",
+                    options: VISA_TYPES,
+                    placeholder: "Select travel purpose",
                   },
                 ].map((field) => (
                   <div key={field.key}>
@@ -249,7 +244,6 @@ export default function VisaScoring() {
                       value={form[field.key]}
                       onChange={(e) => setField(field.key, e.target.value)}
                       className="input-field"
-                      style={{ cursor: "pointer" }}
                     >
                       <option value="">{field.placeholder}</option>
                       {field.options.map((o) => (
@@ -260,23 +254,19 @@ export default function VisaScoring() {
                     </select>
                   </div>
                 ))}
+
                 <button
                   className="btn-primary"
                   disabled={!step1Valid}
                   onClick={() => setStep(2)}
-                  style={{
-                    width: "100%",
-                    justifyContent: "center",
-                    marginTop: 4,
-                  }}
+                  style={{ width: "100%", justifyContent: "center" }}
                 >
-                  Continuer →
+                  Continue →
                 </button>
               </div>
             </div>
           )}
 
-          {/* ── Étape 2 : Finances ── */}
           {step === 2 && (
             <div>
               <h3
@@ -290,70 +280,51 @@ export default function VisaScoring() {
                   color: "var(--blue-700)",
                 }}
               >
-                <FiDollarSign /> Situation financière & professionnelle
+                <FiDollarSign /> Financial and professional details
               </h3>
+
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 22 }}
               >
                 <div>
-                  <label className="label">
-                    Revenu mensuel net (USD ou équivalent)
-                  </label>
+                  <label className="label">Monthly net income</label>
                   <input
                     type="number"
                     min="0"
-                    placeholder="ex: 2 500"
+                    placeholder="e.g. 2500"
                     value={form.revenu}
                     onChange={(e) => setField("revenu", e.target.value)}
                     className="input-field"
                   />
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "var(--gray-500)",
-                      marginTop: 5,
-                    }}
-                  >
-                    Indiquez votre revenu mensuel net en USD ou équivalent
-                  </p>
                 </div>
 
                 <div>
-                  <label className="label">Situation professionnelle</label>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      flexWrap: "wrap",
-                      marginTop: 4,
-                    }}
-                  >
-                    {EMPLOIS.map((e) => (
+                  <label className="label">Employment status</label>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {EMPLOYMENT_OPTIONS.map((option) => (
                       <button
-                        key={e}
+                        key={option}
                         type="button"
-                        onClick={() => setField("emploi", e)}
+                        onClick={() => setField("emploi", option)}
                         style={{
                           padding: "8px 16px",
                           borderRadius: 8,
                           fontSize: 13,
                           border:
-                            form.emploi === e
+                            form.emploi === option
                               ? "2px solid var(--blue-600)"
                               : "1.5px solid var(--gray-200)",
                           background:
-                            form.emploi === e ? "var(--blue-50)" : "white",
+                            form.emploi === option ? "var(--blue-50)" : "white",
                           color:
-                            form.emploi === e
+                            form.emploi === option
                               ? "var(--blue-700)"
                               : "var(--gray-700)",
                           cursor: "pointer",
                           fontWeight: 500,
-                          transition: "all 0.15s",
-                          fontFamily: "var(--font-heading)",
                         }}
                       >
-                        {e}
+                        {option}
                       </button>
                     ))}
                   </div>
@@ -361,13 +332,13 @@ export default function VisaScoring() {
 
                 <div>
                   <label className="label">
-                    Nombre de voyages à l'étranger (5 dernières années)
+                    Number of international trips in the last 5 years
                   </label>
                   <input
                     type="number"
                     min="0"
                     max="50"
-                    placeholder="ex: 3"
+                    placeholder="e.g. 3"
                     value={form.voyages}
                     onChange={(e) => setField("voyages", e.target.value)}
                     className="input-field"
@@ -380,7 +351,7 @@ export default function VisaScoring() {
                     onClick={() => setStep(1)}
                     style={{ flex: 1, justifyContent: "center" }}
                   >
-                    ← Retour
+                    ← Back
                   </button>
                   <button
                     className="btn-primary"
@@ -388,19 +359,18 @@ export default function VisaScoring() {
                     onClick={() => setStep(3)}
                     style={{ flex: 2, justifyContent: "center" }}
                   >
-                    Continuer →
+                    Continue →
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ── Étape 3 : Documents ── */}
           {step === 3 && (
             <div>
               <h3
                 style={{
-                  marginBottom: 8,
+                  marginBottom: 12,
                   fontFamily: "var(--font-heading)",
                   fontSize: "1.2rem",
                   display: "flex",
@@ -409,75 +379,44 @@ export default function VisaScoring() {
                   color: "var(--blue-700)",
                 }}
               >
-                <FiFolder /> Documents disponibles
+                <FiFolder /> Available documents
               </h3>
+
               <p
                 style={{
-                  fontSize: 14,
                   color: "var(--gray-600)",
-                  marginBottom: 22,
+                  fontSize: 14,
+                  marginBottom: 18,
                 }}
               >
-                Cochez les documents que vous possédez actuellement :
+                Select the documents you currently have available.
               </p>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 10,
-                  marginBottom: 28,
-                }}
-              >
-                {DOCS_LISTE.map((d) => (
+
+              <div style={{ display: "grid", gap: 10, marginBottom: 24 }}>
+                {DOCS_LIST.map((doc) => (
                   <label
-                    key={d}
+                    key={doc}
                     style={{
                       display: "flex",
-                      alignItems: "flex-start",
+                      alignItems: "center",
                       gap: 10,
-                      padding: "11px 14px",
+                      background: "var(--gray-50)",
+                      border: "1px solid var(--gray-200)",
                       borderRadius: 10,
+                      padding: "12px 14px",
                       cursor: "pointer",
-                      border: form.docs.includes(d)
-                        ? "1.5px solid var(--blue-400)"
-                        : "1.5px solid var(--gray-200)",
-                      background: form.docs.includes(d)
-                        ? "var(--blue-50)"
-                        : "white",
-                      transition: "all 0.15s",
                     }}
                   >
                     <input
                       type="checkbox"
-                      checked={form.docs.includes(d)}
-                      onChange={() => toggleDoc(d)}
-                      style={{ accentColor: "var(--blue-600)", marginTop: 2 }}
+                      checked={form.docs.includes(doc)}
+                      onChange={() => toggleDoc(doc)}
                     />
-                    <span
-                      style={{
-                        fontSize: 13,
-                        color: "var(--gray-700)",
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {d}
+                    <span style={{ fontSize: 14, color: "var(--gray-700)" }}>
+                      {doc}
                     </span>
                   </label>
                 ))}
-              </div>
-
-              <div
-                style={{
-                  background: "var(--blue-50)",
-                  borderRadius: 10,
-                  padding: "12px 16px",
-                  fontSize: 13,
-                  color: "var(--blue-800)",
-                  marginBottom: 24,
-                }}
-              >
-                <strong>{form.docs.length}</strong> document(s) sélectionné(s)
-                sur {DOCS_LISTE.length}
               </div>
 
               <div style={{ display: "flex", gap: 12 }}>
@@ -486,203 +425,88 @@ export default function VisaScoring() {
                   onClick={() => setStep(2)}
                   style={{ flex: 1, justifyContent: "center" }}
                 >
-                  ← Retour
+                  ← Back
                 </button>
                 <button
                   className="btn-primary"
-                  onClick={analyser}
+                  onClick={reviewApplication}
                   style={{ flex: 2, justifyContent: "center" }}
                 >
-                  <FiAward size={15} /> Analyser mon dossier
+                  Review application
                 </button>
               </div>
             </div>
           )}
 
-          {/* ── Étape 4 : Résultat ── */}
-          {step === 4 && resultat && (
+          {step === 4 && result && (
             <div>
               <h3
                 style={{
-                  textAlign: "center",
-                  marginBottom: 28,
+                  marginBottom: 18,
                   fontFamily: "var(--font-heading)",
                   fontSize: "1.2rem",
+                  color: "var(--blue-700)",
                 }}
               >
-                Votre Visa Readiness Score
+                Application review result
               </h3>
 
-              {/* Gauge circulaire */}
               <div
                 style={{
-                  width: 160,
-                  height: 160,
-                  borderRadius: "50%",
-                  border: `12px solid ${resultat.couleur}`,
-                  margin: "0 auto 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "white",
-                  boxShadow: `0 0 32px ${resultat.couleur}28`,
-                  transition: "all 0.5s ease",
+                  background: "var(--blue-50)",
+                  border: "1px solid var(--blue-200)",
+                  borderRadius: 12,
+                  padding: "18px 20px",
+                  marginBottom: 20,
                 }}
               >
-                <span
-                  style={{
-                    fontSize: "3rem",
-                    fontWeight: 800,
-                    color: resultat.couleur,
-                    fontFamily: "var(--font-heading)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {resultat.score}
-                </span>
-                <span
-                  style={{
-                    fontSize: 13,
-                    color: "var(--gray-500)",
-                    marginTop: 2,
-                  }}
-                >
-                  / 100
-                </span>
-              </div>
-
-              <div style={{ textAlign: "center", marginBottom: 28 }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    background: resultat.couleur + "18",
-                    color: resultat.couleur,
-                    padding: "6px 20px",
-                    borderRadius: 20,
-                    fontWeight: 800,
-                    fontSize: 15,
-                    fontFamily: "var(--font-heading)",
-                  }}
-                >
-                  {resultat.niveau}
-                </span>
-                <p
-                  style={{
-                    marginTop: 12,
-                    fontSize: 14,
-                    color: "var(--gray-700)",
-                    maxWidth: 360,
-                    margin: "10px auto 0",
-                  }}
-                >
-                  {resultat.conseil}
+                <p style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>
+                  Overall result: {result.niveau}
+                </p>
+                <p style={{ fontSize: 14, color: "var(--gray-700)" }}>
+                  {result.conseil}
                 </p>
               </div>
 
-              {/* Points forts */}
-              {resultat.pointsForts.length > 0 && (
-                <div
-                  style={{
-                    background: "#F0FDF4",
-                    border: "1px solid #BBF7D0",
-                    borderRadius: 12,
-                    padding: "16px 20px",
-                    marginBottom: 16,
-                  }}
-                >
-                  <p
-                    style={{
-                      fontWeight: 700,
-                      color: "#166534",
-                      marginBottom: 10,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 14,
-                    }}
-                  >
-                    <FiCheckCircle /> Points forts
-                  </p>
-                  {resultat.pointsForts.map((p, i) => (
-                    <p
-                      key={i}
-                      style={{
-                        fontSize: 13,
-                        color: "#15803D",
-                        paddingLeft: 16,
-                        borderLeft: "3px solid #4ADE80",
-                        marginBottom: 8,
-                        lineHeight: 1.55,
-                      }}
-                    >
-                      {p}
-                    </p>
-                  ))}
+              {!!result.pointsForts?.length && (
+                <div style={{ marginBottom: 18 }}>
+                  <h4 style={{ marginBottom: 8 }}>Strengths</h4>
+                  <ul style={{ paddingLeft: 18 }}>
+                    {result.pointsForts.map((item, i) => (
+                      <li
+                        key={i}
+                        style={{ marginBottom: 6, color: "var(--gray-700)" }}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
-              {/* Points à améliorer */}
-              {resultat.recommandations.length > 0 && (
-                <div
-                  style={{
-                    background: "#FFF7ED",
-                    border: "1px solid #FED7AA",
-                    borderRadius: 12,
-                    padding: "16px 20px",
-                    marginBottom: 24,
-                  }}
-                >
-                  <p
-                    style={{
-                      fontWeight: 700,
-                      color: "#92400E",
-                      marginBottom: 10,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 14,
-                    }}
-                  >
-                    <FiAlertCircle /> Points à renforcer
-                  </p>
-                  {resultat.recommandations.map((r, i) => (
-                    <p
-                      key={i}
-                      style={{
-                        fontSize: 13,
-                        color: "#78350F",
-                        paddingLeft: 16,
-                        borderLeft: "3px solid #FB923C",
-                        marginBottom: 8,
-                        lineHeight: 1.55,
-                      }}
-                    >
-                      {r}
-                    </p>
-                  ))}
+              {!!result.recommandations?.length && (
+                <div style={{ marginBottom: 24 }}>
+                  <h4 style={{ marginBottom: 8 }}>Recommendations</h4>
+                  <ul style={{ paddingLeft: 18 }}>
+                    {result.recommandations.map((item, i) => (
+                      <li
+                        key={i}
+                        style={{ marginBottom: 6, color: "var(--gray-700)" }}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
-              {/* Actions */}
-              <div style={{ display: "flex", gap: 12 }}>
-                <button
-                  className="btn-ghost"
-                  onClick={recommencer}
-                  style={{ flex: 1, justifyContent: "center", fontSize: 13 }}
-                >
-                  <FiRefreshCw size={14} /> Recommencer
-                </button>
-                <button
-                  className="btn-primary"
-                  style={{ flex: 2, justifyContent: "center" }}
-                  onClick={() =>
-                    alert("Fonctionnalité PDF disponible avec le backend.")
-                  }
-                >
-                  <FiDownload size={14} /> Télécharger le rapport
-                </button>
-              </div>
+              <button
+                className="btn-primary"
+                onClick={reset}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                <FiRefreshCw size={15} /> Start again
+              </button>
             </div>
           )}
         </div>

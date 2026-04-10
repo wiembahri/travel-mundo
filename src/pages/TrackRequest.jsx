@@ -4,43 +4,49 @@ import { FAKE_DOSSIERS } from "../services/dossiers";
 import StatusTracker from "../components/StatusTracker";
 
 const STATUS_STYLES = {
-  Terminé: { bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
-  "En cours de traitement": {
+  Completed: { bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
+  "In Progress": {
     bg: "#EFF6FF",
     color: "#1D4ED8",
     border: "#BFDBFE",
   },
-  "En attente": { bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
+  Pending: { bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
 };
 
 export default function TrackRequest() {
   const [query, setQuery] = useState("");
-  const [dossier, setDossier] = useState(null);
+  const [application, setApplication] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const search = async () => {
     if (!query.trim()) return;
+
     setLoading(true);
     setNotFound(false);
-    setDossier(null);
+    setApplication(null);
+
     await new Promise((r) => setTimeout(r, 600));
+
     const data = FAKE_DOSSIERS[query.toUpperCase().trim()];
     if (data) {
-      setDossier(data);
+      setApplication(data);
     } else {
       setNotFound(true);
     }
+
     setLoading(false);
   };
 
-  const statusStyle = dossier
-    ? STATUS_STYLES[dossier.statut] || STATUS_STYLES["En attente"]
+  const statusStyle = application
+    ? STATUS_STYLES[application.status] || STATUS_STYLES.Pending
     : null;
 
-  const doneSteps = dossier ? dossier.steps.filter((s) => s.done).length : 0;
-  const totalSteps = dossier ? dossier.steps.length : 0;
-  const progress = dossier ? Math.round((doneSteps / totalSteps) * 100) : 0;
+  const doneSteps = application
+    ? application.steps.filter((s) => s.done).length
+    : 0;
+  const totalSteps = application ? application.steps.length : 0;
+  const progress = application ? Math.round((doneSteps / totalSteps) * 100) : 0;
 
   return (
     <div
@@ -51,17 +57,15 @@ export default function TrackRequest() {
       }}
     >
       <div className="container" style={{ maxWidth: 700 }}>
-        {/* ── Header ── */}
         <div className="section-header">
-          <span className="badge">Suivi en temps réel</span>
-          <h1 className="section-title">Suivez votre dossier</h1>
+          <span className="badge">Real-time tracking</span>
+          <h1 className="section-title">Track your application</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Entrez votre numéro de référence reçu par email pour connaître
-            l'état exact de votre demande.
+            Enter the reference number you received by email to check the
+            current status of your application.
           </p>
         </div>
 
-        {/* ── Barre de recherche ── */}
         <div
           style={{
             display: "flex",
@@ -76,7 +80,7 @@ export default function TrackRequest() {
         >
           <input
             type="text"
-            placeholder="Numéro de référence — ex: TM-2024-001"
+            placeholder="Reference number — e.g. TM-2024-001"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && search()}
@@ -98,17 +102,16 @@ export default function TrackRequest() {
             style={{ borderRadius: 0, padding: "0 28px", fontSize: 14 }}
           >
             {loading ? (
-              "Recherche..."
+              "Searching..."
             ) : (
               <>
                 <FiSearch size={15} style={{ marginRight: 6 }} />
-                Rechercher
+                Search
               </>
             )}
           </button>
         </div>
 
-        {/* ── Dossier non trouvé ── */}
         {notFound && (
           <div
             style={{
@@ -132,19 +135,18 @@ export default function TrackRequest() {
                   fontFamily: "var(--font-heading)",
                 }}
               >
-                Dossier introuvable
+                Application not found
               </p>
               <p style={{ fontSize: 14 }}>
-                Aucun dossier trouvé pour la référence{" "}
-                <strong>"{query}"</strong>. Vérifiez le numéro reçu dans votre
-                email de confirmation.
+                No application was found for reference{" "}
+                <strong>"{query}"</strong>. Please check the number you received
+                in your confirmation email.
               </p>
             </div>
           </div>
         )}
 
-        {/* ── Résultat trouvé ── */}
-        {dossier && statusStyle && (
+        {application && statusStyle && (
           <div
             style={{
               background: "white",
@@ -154,7 +156,6 @@ export default function TrackRequest() {
               overflow: "hidden",
             }}
           >
-            {/* En-tête dossier */}
             <div
               style={{
                 background:
@@ -182,7 +183,7 @@ export default function TrackRequest() {
                       textTransform: "uppercase",
                     }}
                   >
-                    Référence {dossier.reference}
+                    Reference {application.reference}
                   </p>
                   <h3
                     style={{
@@ -191,17 +192,16 @@ export default function TrackRequest() {
                       marginBottom: 6,
                     }}
                   >
-                    {dossier.nom}
+                    {application.name}
                   </h3>
                   <p style={{ opacity: 0.88, fontSize: 14 }}>
-                    {dossier.service}
+                    {application.service}
                   </p>
                   <p style={{ opacity: 0.7, fontSize: 12, marginTop: 4 }}>
-                    Déposé le {dossier.dateCreation}
+                    Submitted on {application.createdAt}
                   </p>
                 </div>
 
-                {/* Badge statut */}
                 <div
                   style={{
                     display: "inline-block",
@@ -215,11 +215,10 @@ export default function TrackRequest() {
                     fontFamily: "var(--font-heading)",
                   }}
                 >
-                  {dossier.statut}
+                  {application.status}
                 </div>
               </div>
 
-              {/* Barre de progression */}
               <div style={{ marginTop: 20 }}>
                 <div
                   style={{
@@ -230,9 +229,9 @@ export default function TrackRequest() {
                     marginBottom: 8,
                   }}
                 >
-                  <span>Progression du dossier</span>
+                  <span>Application progress</span>
                   <span>
-                    {doneSteps}/{totalSteps} étapes
+                    {doneSteps}/{totalSteps} steps
                   </span>
                 </div>
                 <div
@@ -256,7 +255,6 @@ export default function TrackRequest() {
               </div>
             </div>
 
-            {/* Timeline via StatusTracker */}
             <div style={{ padding: "32px 32px 24px" }}>
               <h4
                 style={{
@@ -266,14 +264,16 @@ export default function TrackRequest() {
                   fontSize: 15,
                 }}
               >
-                Avancement détaillé
+                Detailed progress
               </h4>
-              <StatusTracker steps={dossier.steps} statut={dossier.statut} />
+              <StatusTracker
+                steps={application.steps}
+                status={application.status}
+              />
             </div>
           </div>
         )}
 
-        {/* ── Astuce démo ── */}
         <div
           style={{
             marginTop: 28,
@@ -285,7 +285,7 @@ export default function TrackRequest() {
             color: "var(--blue-900)",
           }}
         >
-          <strong>Démo :</strong> Testez avec{" "}
+          <strong>Demo:</strong> Try with{" "}
           {["TM-2024-001", "TM-2024-002", "TM-2024-003"].map((ref, i) => (
             <span key={ref}>
               <button

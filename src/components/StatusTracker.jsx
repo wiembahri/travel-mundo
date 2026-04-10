@@ -1,19 +1,15 @@
-﻿// src/components/StatusTracker.jsx
-// Composant réutilisable : timeline de suivi d'un dossier
+﻿import { FiCheckCircle, FiClock, FiLoader } from "react-icons/fi";
 
-import { FiCheckCircle, FiClock, FiLoader } from "react-icons/fi";
-
-export default function StatusTracker({ steps, statut }) {
+export default function StatusTracker({ steps, status }) {
   const firstPendingIndex = steps.findIndex((s) => !s.done);
 
   return (
     <div>
       {steps.map((step, i) => {
-        const isActive =
-          i === firstPendingIndex && statut === "En cours de traitement";
+        const isActive = i === firstPendingIndex && status === "In Progress";
+
         return (
           <div key={i} style={{ display: "flex", gap: 16 }}>
-            {/* Icône + ligne */}
             <div
               style={{
                 display: "flex",
@@ -66,7 +62,6 @@ export default function StatusTracker({ steps, statut }) {
               )}
             </div>
 
-            {/* Contenu */}
             <div style={{ paddingBottom: 20, paddingTop: 8, flex: 1 }}>
               <p
                 style={{
@@ -93,10 +88,11 @@ export default function StatusTracker({ steps, statut }) {
                       fontWeight: 600,
                     }}
                   >
-                    En cours
+                    In progress
                   </span>
                 )}
               </p>
+
               {step.date ? (
                 <p
                   style={{
@@ -105,7 +101,7 @@ export default function StatusTracker({ steps, statut }) {
                     marginTop: 3,
                   }}
                 >
-                  Complété le {step.date}
+                  Completed on {step.date}
                 </p>
               ) : (
                 <p
@@ -116,7 +112,7 @@ export default function StatusTracker({ steps, statut }) {
                     fontStyle: "italic",
                   }}
                 >
-                  {isActive ? "En traitement..." : "En attente"}
+                  {isActive ? "Processing..." : "Pending"}
                 </p>
               )}
             </div>

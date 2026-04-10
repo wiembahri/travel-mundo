@@ -3,67 +3,80 @@ import { FiMessageCircle, FiX, FiSend, FiMinimize2 } from "react-icons/fi";
 
 const FAQS = [
   {
-    mots: ["schengen", "europe", "visa europe", "france", "italie", "espagne"],
-    reponse:
-      "Pour un visa Schengen, il vous faut : passeport valide 6 mois, formulaire de demande, photo biométrique, relevés bancaires (3 mois), justificatif d'hébergement et assurance voyage. Le délai moyen est de 15 jours.",
+    words: ["schengen", "europe", "france", "italy", "spain", "schengen visa"],
+    reply:
+      "For a Schengen Visa application, you usually need a valid passport, an application form, a recent passport photo, supporting travel documents, and financial or administrative documents depending on your case.",
   },
   {
-    mots: ["passeport", "renouveler", "renouvellement", "biométrique"],
-    reponse:
-      "Pour un passeport biométrique, préparez : acte de naissance, CIN en cours de validité, ancien passeport (si renouvellement), 2 photos récentes et le formulaire officiel. Délai : environ 10 jours ouvrables.",
+    words: [
+      "passport",
+      "renew",
+      "renewal",
+      "new passport",
+      "passport application",
+    ],
+    reply:
+      "For passport-related applications, the required documents may depend on whether it is a new application, renewal, or correction. Travel Mundo helps prepare the information and guides you before official submission.",
   },
   {
-    mots: ["usa", "états-unis", "amérique", "américain"],
-    reponse:
-      "Le visa USA (B1/B2) nécessite : formulaire DS-160, confirmation de RDV ambassade, preuve financière, preuves de liens avec votre pays d'origine. L'entretien à l'ambassade est obligatoire.",
+    words: ["usa", "u.s.", "united states", "us visa", "american visa"],
+    reply:
+      "For U.S. travel, the required authorization depends on your travel purpose and eligibility. Some travelers may need a U.S. Visa, while others may qualify for ESTA. We help guide you through the correct application path.",
   },
   {
-    mots: ["canada", "canadien"],
-    reponse:
-      "Pour un visa Canada, il faut : formulaire IMM 5257, preuve de fonds suffisants, biométrie, et une invitation si vous visitez de la famille. Délai moyen : 28 jours ouvrables.",
+    words: ["esta", "eta", "travel authorization", "electronic authorization"],
+    reply:
+      "ETA / ESTA services are for electronic travel authorizations. Travel Mundo helps guide you through the form, reviews the information provided, and supports you through the submission steps based on your eligibility.",
   },
   {
-    mots: ["suivi", "dossier", "état", "statut", "référence"],
-    reponse:
-      'Pour suivre votre dossier, rendez-vous dans la section "Suivi dossier" du menu et entrez votre numéro de référence (format TM-AAAA-XXX) reçu par email lors de votre dépôt.',
+    words: ["track", "tracking", "application status", "status", "reference"],
+    reply:
+      'To track your application, go to the "Track Application" page and enter your reference number in the format TM-2024-001.',
   },
   {
-    mots: ["score", "scoring", "analyse", "chances", "prêt", "readiness"],
-    reponse:
-      'Notre outil Scoring IA analyse votre profil (nationalité, finances, historique voyages, documents) et vous donne un score de 0 à 100 avec des recommandations personnalisées. Accédez-y via "Scoring IA" dans le menu.',
+    words: ["processing time", "delay", "how long", "time", "wait"],
+    reply:
+      "Processing times depend on the type of service and the official procedure involved. Some ETA / ESTA requests are usually processed quickly, while visa and passport applications may take longer depending on the case.",
   },
   {
-    mots: ["délai", "combien", "temps", "durée", "attente"],
-    reponse:
-      "Les délais varient selon le visa : Schengen (15 jours), Passeport (10 jours), USA (30-60 jours), Canada (28 jours). Ces délais sont indicatifs et peuvent varier selon la période.",
+    words: ["fees", "cost", "price", "payment"],
+    reply:
+      "Fees vary depending on the type of service and the application involved. For more details, please contact our support team directly.",
   },
   {
-    mots: ["prix", "tarif", "coût", "frais", "payer"],
-    reponse:
-      "Les frais dépendent du service. Contactez-nous directement au +216 71 000 000 ou via la page Contact pour obtenir un devis personnalisé selon votre situation.",
+    words: ["contact", "support", "help", "email", "phone"],
+    reply:
+      "You can contact Travel Mundo for application support by email or phone through the Contact page. Our team is available during working hours to assist you.",
   },
   {
-    mots: ["rendez-vous", "rdv", "rencontrer", "visiter", "bureau"],
-    reponse:
-      "Notre bureau est situé Avenue Habib Bourguiba, Tunis. Horaires : Lun-Ven 8h30-17h30. Vous pouvez aussi nous contacter via la page Contact pour prendre rendez-vous.",
+    words: [
+      "services",
+      "what do you offer",
+      "what services",
+      "application help",
+    ],
+    reply:
+      "Travel Mundo provides support for Schengen Visa, U.S. Visa, Passport, and ETA / ESTA applications through a guided and simplified process.",
   },
 ];
 
 const QUICK_QUESTIONS = [
-  "Documents visa Schengen ?",
-  "Comment suivre mon dossier ?",
-  "Délai passeport biométrique ?",
-  "Comment fonctionne le scoring ?",
+  "What documents are needed for a Schengen Visa?",
+  "Do I need ESTA or a U.S. Visa?",
+  "How can I track my application?",
+  "What services do you offer?",
 ];
 
 function getBotReply(message) {
   const msg = message.toLowerCase().trim();
+
   for (const faq of FAQS) {
-    if (faq.mots.some((m) => msg.includes(m))) {
-      return faq.reponse;
+    if (faq.words.some((word) => msg.includes(word))) {
+      return faq.reply;
     }
   }
-  return "Je n'ai pas trouvé de réponse précise à votre question. Je vous recommande de nous contacter directement au +216 71 000 000 ou de passer par la page Contact. Nos agents sont disponibles Lun-Ven de 8h30 à 17h30.";
+
+  return "I could not find an exact answer to your question. Please contact our support team through the Contact page for further assistance.";
 }
 
 export default function Chatbot() {
@@ -71,8 +84,8 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "Bonjour ! Je suis l'assistant virtuel Travel Mundo 👋\nComment puis-je vous aider aujourd'hui ?",
-      time: new Date().toLocaleTimeString("fr-FR", {
+      text: "Hello! I’m Travel Mundo’s virtual assistant 👋\nHow can I help you today?",
+      time: new Date().toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
       }),
@@ -94,17 +107,24 @@ export default function Chatbot() {
   const sendMessage = (text) => {
     const msg = (text || input).trim();
     if (!msg) return;
+
     setInput("");
-    const now = new Date().toLocaleTimeString("fr-FR", {
+
+    const now = new Date().toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });
-    setMessages((m) => [...m, { from: "user", text: msg, time: now }]);
+
+    setMessages((prev) => [...prev, { from: "user", text: msg, time: now }]);
     setTyping(true);
+
     setTimeout(
       () => {
         const reply = getBotReply(msg);
-        setMessages((m) => [...m, { from: "bot", text: reply, time: now }]);
+        setMessages((prev) => [
+          ...prev,
+          { from: "bot", text: reply, time: now },
+        ]);
         setTyping(false);
         if (!open) setUnread((u) => u + 1);
       },
@@ -114,7 +134,7 @@ export default function Chatbot() {
 
   return (
     <>
-      {/* ── Floating button ── */}
+      {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
         style={{
@@ -164,7 +184,7 @@ export default function Chatbot() {
         )}
       </button>
 
-      {/* ── Chat window ── */}
+      {/* Chat window */}
       {open && (
         <div
           style={{
@@ -217,7 +237,7 @@ export default function Chatbot() {
                     fontFamily: "var(--font-heading)",
                   }}
                 >
-                  Assistant Travel Mundo
+                  Travel Mundo Assistant
                 </p>
                 <p
                   style={{
@@ -226,10 +246,11 @@ export default function Chatbot() {
                     marginTop: 1,
                   }}
                 >
-                  Répond en quelques secondes
+                  Replies in a few seconds
                 </p>
               </div>
             </div>
+
             <button
               onClick={() => setOpen(false)}
               style={{
@@ -297,7 +318,6 @@ export default function Chatbot() {
               </div>
             ))}
 
-            {/* Typing indicator */}
             {typing && (
               <div style={{ display: "flex", alignItems: "flex-start" }}>
                 <div
@@ -326,6 +346,7 @@ export default function Chatbot() {
                 </div>
               </div>
             )}
+
             <div ref={bottomRef} />
           </div>
 
@@ -382,7 +403,7 @@ export default function Chatbot() {
           >
             <input
               type="text"
-              placeholder="Posez votre question..."
+              placeholder="Ask your question..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
@@ -431,7 +452,7 @@ export default function Chatbot() {
       <style>{`
         @keyframes bounce {
           0%, 80%, 100% { transform: translateY(0); }
-          40%            { transform: translateY(-6px); }
+          40% { transform: translateY(-6px); }
         }
       `}</style>
     </>

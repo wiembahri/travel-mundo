@@ -11,37 +11,38 @@ import {
 const INFOS = [
   {
     icon: <FiMapPin size={20} />,
-    titre: "Adresse",
-    val: "Avenue Habib Bourguiba, Tunis 1001, Tunisie",
+    title: "Service",
+    value: "Visa, passport, ETA / ESTA application assistance",
     color: "var(--blue-600)",
   },
   {
     icon: <FiPhone size={20} />,
-    titre: "Téléphone",
-    val: "+216 71 000 000",
-    color: "#059669",
+    title: "Phone",
+    value: "+216 71 000 000",
+    color: "var(--blue-700)",
   },
   {
     icon: <FiMail size={20} />,
-    titre: "Email",
-    val: "contact@travelmundo.tn",
-    color: "#7C3AED",
+    title: "Email",
+    value: "contact@travelmundo.tn",
+    color: "var(--blue-600)",
   },
   {
     icon: <FiClock size={20} />,
-    titre: "Horaires",
-    val: "Lun–Ven : 8h30 – 17h30 | Sam : 9h – 13h",
-    color: "#D97706",
+    title: "Hours",
+    value: "Monday – Friday: 8:30 AM – 5:30 PM",
+    color: "var(--blue-700)",
   },
 ];
 
 export default function Contact() {
   const [form, setForm] = useState({
-    nom: "",
+    name: "",
     email: "",
-    sujet: "",
+    subject: "",
     message: "",
   });
+
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -63,11 +64,11 @@ export default function Contact() {
     >
       <div className="container">
         <div className="section-header">
-          <span className="badge">Contactez-nous</span>
-          <h1 className="section-title">Nous sommes là pour vous</h1>
+          <span className="badge">Contact</span>
+          <h1 className="section-title">We’re here to help</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Une question sur votre visa ? Besoin d'accompagnement ? Notre équipe
-            répond sous 24h ouvrables.
+            Have a question about your visa, passport, ETA, or ESTA application?
+            Our team is here to guide you through the next steps.
           </p>
         </div>
 
@@ -80,7 +81,7 @@ export default function Contact() {
           }}
           className="contact-grid"
         >
-          {/* ── Infos de contact ── */}
+          {/* Contact info */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {INFOS.map((info, i) => (
               <div
@@ -111,6 +112,7 @@ export default function Contact() {
                 >
                   {info.icon}
                 </div>
+
                 <div>
                   <p
                     style={{
@@ -122,7 +124,7 @@ export default function Contact() {
                       marginBottom: 4,
                     }}
                   >
-                    {info.titre}
+                    {info.title}
                   </p>
                   <p
                     style={{
@@ -131,14 +133,14 @@ export default function Contact() {
                       lineHeight: 1.5,
                     }}
                   >
-                    {info.val}
+                    {info.value}
                   </p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* ── Formulaire ── */}
+          {/* Form */}
           <div
             style={{
               background: "white",
@@ -164,14 +166,16 @@ export default function Contact() {
                 >
                   <FiCheckCircle size={28} color="#16A34A" />
                 </div>
+
                 <h3
                   style={{
                     marginBottom: 10,
                     fontFamily: "var(--font-heading)",
                   }}
                 >
-                  Message envoyé !
+                  Message sent successfully
                 </h3>
+
                 <p
                   style={{
                     color: "var(--gray-600)",
@@ -179,17 +183,23 @@ export default function Contact() {
                     marginBottom: 24,
                   }}
                 >
-                  Merci pour votre message. Notre équipe vous répondra sous 24h
-                  ouvrables.
+                  Thank you for contacting us. Our team will get back to you as
+                  soon as possible.
                 </p>
+
                 <button
                   className="btn-outline"
                   onClick={() => {
                     setSent(false);
-                    setForm({ nom: "", email: "", sujet: "", message: "" });
+                    setForm({
+                      name: "",
+                      email: "",
+                      subject: "",
+                      message: "",
+                    });
                   }}
                 >
-                  Envoyer un autre message
+                  Send another message
                 </button>
               </div>
             ) : (
@@ -204,7 +214,7 @@ export default function Contact() {
                     marginBottom: 4,
                   }}
                 >
-                  Envoyez-nous un message
+                  Send us a message
                 </h3>
 
                 <div
@@ -213,26 +223,28 @@ export default function Contact() {
                     gridTemplateColumns: "1fr 1fr",
                     gap: 16,
                   }}
+                  className="contact-form-grid"
                 >
                   <div>
-                    <label className="label">Nom complet</label>
+                    <label className="label">Full name</label>
                     <input
                       className="input-field"
                       type="text"
-                      placeholder="Votre nom"
-                      value={form.nom}
+                      placeholder="Your full name"
+                      value={form.name}
                       required
                       onChange={(e) =>
-                        setForm({ ...form, nom: e.target.value })
+                        setForm({ ...form, name: e.target.value })
                       }
                     />
                   </div>
+
                   <div>
                     <label className="label">Email</label>
                     <input
                       className="input-field"
                       type="email"
-                      placeholder="votre@email.com"
+                      placeholder="you@example.com"
                       value={form.email}
                       required
                       onChange={(e) =>
@@ -243,40 +255,31 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="label">Sujet</label>
-                  <select
+                  <label className="label">Subject</label>
+                  <input
                     className="input-field"
-                    value={form.sujet}
+                    type="text"
+                    placeholder="Type of service or question"
+                    value={form.subject}
                     required
                     onChange={(e) =>
-                      setForm({ ...form, sujet: e.target.value })
+                      setForm({ ...form, subject: e.target.value })
                     }
-                    style={{ cursor: "pointer" }}
-                  >
-                    <option value="">Sélectionnez un sujet</option>
-                    <option>Demande de visa Schengen</option>
-                    <option>Renouvellement passeport</option>
-                    <option>Visa USA / Canada / UK</option>
-                    <option>Suivi de dossier</option>
-                    <option>Autre</option>
-                  </select>
+                  />
                 </div>
 
                 <div>
                   <label className="label">Message</label>
                   <textarea
                     className="input-field"
-                    placeholder="Décrivez votre demande ou question..."
-                    rows={5}
-                    required
+                    rows="6"
+                    placeholder="Tell us how we can help you with your application"
                     value={form.message}
+                    required
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    style={{
-                      resize: "vertical",
-                      fontFamily: "var(--font-body)",
-                    }}
+                    style={{ resize: "vertical" }}
                   />
                 </div>
 
@@ -284,17 +287,13 @@ export default function Contact() {
                   type="submit"
                   className="btn-primary"
                   disabled={loading}
-                  style={{
-                    width: "100%",
-                    justifyContent: "center",
-                    padding: "13px",
-                  }}
+                  style={{ width: "100%", justifyContent: "center" }}
                 >
                   {loading ? (
-                    "Envoi en cours..."
+                    "Sending..."
                   ) : (
                     <>
-                      <FiSend size={15} /> Envoyer le message
+                      <FiSend size={15} /> Send message
                     </>
                   )}
                 </button>
@@ -302,13 +301,19 @@ export default function Contact() {
             )}
           </div>
         </div>
-      </div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .contact-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+        <style>{`
+          @media (max-width: 900px) {
+            .contact-grid {
+              grid-template-columns: 1fr !important;
+            }
+
+            .contact-form-grid {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}</style>
+      </div>
     </div>
   );
 }

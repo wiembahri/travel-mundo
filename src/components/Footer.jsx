@@ -2,19 +2,16 @@
 import { FiMapPin, FiPhone, FiMail, FiClock } from "react-icons/fi";
 
 const QUICK_LINKS = [
-  { to: "/", label: "Accueil" },
+  { to: "/", label: "Home" },
   { to: "/services", label: "Services" },
-  { to: "/visa-map", label: "Carte Visa interactive" },
-  { to: "/visa-scoring", label: "Scoring IA" },
-  { to: "/suivi", label: "Suivi de dossier" },
-  { to: "/a-propos", label: "À propos" },
+  { to: "/visa-map", label: "Visa Map" },
+  { to: "/visa-scoring", label: "Application Review" },
+  { to: "/suivi", label: "Track Application" },
+  { to: "/a-propos", label: "About" },
+  { to: "/contact", label: "Contact" },
 ];
 
-const SERVICES_LINKS = [
-  "Visa Schengen",
-  "Visa USA",
-  "Passeport ",
-];
+const SERVICES_LINKS = ["Schengen Visa", "U.S. Visa", "Passport", "ETA / ESTA"];
 
 export default function Footer() {
   return (
@@ -35,7 +32,7 @@ export default function Footer() {
             marginBottom: 56,
           }}
         >
-          {/* ── Brand ── */}
+          {/* Brand */}
           <div>
             <div
               style={{
@@ -72,17 +69,19 @@ export default function Footer() {
                 Travel<span style={{ color: "var(--blue-400)" }}>Mundo</span>
               </span>
             </div>
+
             <p
               style={{
                 fontSize: 14,
                 lineHeight: 1.8,
-                maxWidth: 240,
+                maxWidth: 280,
                 marginBottom: 20,
               }}
             >
-              Agence spécialisée dans les services administratifs visa et
-              passeport.
+              Private assistance service for visa, passport, ETA, and ESTA
+              applications through a guided and simplified process.
             </p>
+
             <div
               style={{
                 display: "inline-block",
@@ -95,11 +94,11 @@ export default function Footer() {
                 fontWeight: 600,
               }}
             >
-              Agréé — Services officiels
+              Private support service
             </div>
           </div>
 
-          {/* ── Quick links ── */}
+          {/* Navigation */}
           <div>
             <h4
               style={{
@@ -136,7 +135,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* ── Services ── */}
+          {/* Services */}
           <div>
             <h4
               style={{
@@ -146,11 +145,11 @@ export default function Footer() {
                 marginBottom: 18,
               }}
             >
-              Nos services
+              Services
             </h4>
             <ul style={{ listStyle: "none" }}>
-              {SERVICES_LINKS.map((s) => (
-                <li key={s} style={{ marginBottom: 10 }}>
+              {SERVICES_LINKS.map((service) => (
+                <li key={service} style={{ marginBottom: 10 }}>
                   <Link
                     to="/services"
                     style={{
@@ -166,14 +165,14 @@ export default function Footer() {
                       (e.target.style.color = "var(--gray-400)")
                     }
                   >
-                    {s}
+                    {service}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ── Contact ── */}
+          {/* Contact */}
           <div>
             <h4
               style={{
@@ -185,14 +184,18 @@ export default function Footer() {
             >
               Contact
             </h4>
+
             {[
               {
                 icon: <FiMapPin size={14} />,
-                text: "Lac 1 ,Tunis , Crystal Palace Building, 3ème étage",
+                text: "Application assistance and online support",
               },
               { icon: <FiPhone size={14} />, text: "+216 71 000 000" },
               { icon: <FiMail size={14} />, text: "contact@travelmundo.tn" },
-              { icon: <FiClock size={14} />, text: "Lun–Ven : 8h30 – 17h30" },
+              {
+                icon: <FiClock size={14} />,
+                text: "Monday to Friday • 8:30 AM – 5:30 PM",
+              },
             ].map(({ icon, text }, i) => (
               <div
                 key={i}
@@ -219,7 +222,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── Bottom bar ── */}
+        {/* Bottom bar */}
         <div
           style={{
             borderTop: "1px solid rgba(255,255,255,0.07)",
@@ -232,10 +235,12 @@ export default function Footer() {
           }}
         >
           <p style={{ fontSize: 13 }}>
-            © {new Date().getFullYear()} Travel Mundo. Tous droits réservés.
+            © {new Date().getFullYear()} Travel Mundo. All rights reserved.
           </p>
-          <p style={{ fontSize: 12, color: "var(--gray-600)" }}>
-            Plateforme non affiliée aux portails officiels gouvernementaux.
+          <p style={{ fontSize: 12, color: "var(--gray-600)", maxWidth: 520 }}>
+            Travel Mundo is a private assistance service and is not affiliated
+            with any government authority. Applications are completed through
+            the relevant official offices or platforms.
           </p>
         </div>
       </div>

@@ -1,199 +1,287 @@
 ﻿import { useState } from "react";
-import { FiSearch, FiExternalLink, FiInfo } from "react-icons/fi";
+import { FiExternalLink, FiInfo } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
-// Données visa par pays
-const PAYS_DATA = {
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+const SCHENGEN_COUNTRIES = [
+  "France",
+  "Germany",
+  "Spain",
+  "Italy",
+  "Belgium",
+  "Netherlands",
+  "Portugal",
+  "Switzerland",
+  "Austria",
+  "Poland",
+  "Greece",
+  "Czech Republic",
+  "Denmark",
+  "Finland",
+  "Hungary",
+  "Iceland",
+  "Luxembourg",
+  "Malta",
+  "Norway",
+  "Slovakia",
+  "Slovenia",
+  "Sweden",
+  "Estonia",
+  "Latvia",
+  "Lithuania",
+  "Croatia",
+];
+
+const COUNTRY_DETAILS = {
+  "United States of America": {
+    supported: true,
+    flag: "🇺🇸",
+    title: "United States",
+    service: "U.S. Visa / ESTA",
+    type: "ESTA or U.S. Visa depending on eligibility",
+    procedure: [
+      "Choose the correct application type",
+      "Complete the online application form",
+      "Review your information before submission",
+    ],
+    documents: [
+      "Valid passport",
+      "Personal information",
+      "Travel details",
+      "Supporting documents if required",
+    ],
+    ctaLabel: "Start application",
+    ctaType: "external",
+    ctaLink: "https://usimmigrationassistance.com/",
+  },
+
   France: {
-    drapeau: "🇫🇷",
-    region: "Europe",
-    typeVisa: "Visa Schengen requis",
-    couleur: "#2563EB",
-    conditions:
-      "Court séjour jusqu'à 90 jours sur 180 jours dans l'espace Schengen.",
-    documents: [
-      "Passeport valide 6 mois",
-      "Formulaire de demande Schengen",
-      "Assurance voyage 30 000 €",
-      "Relevés bancaires 3 mois",
-      "Réservation hôtel",
-      "Billet aller-retour",
+    supported: true,
+    flag: "🇫🇷",
+    title: "France",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
     ],
-    delai: "15 jours ouvrables",
-    frais: "80 €",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
-  },
-  "États-Unis": {
-    drapeau: "🇺🇸",
-    region: "Amérique du Nord",
-    typeVisa: "Visa B1/B2 requis",
-    couleur: "#DC2626",
-    conditions:
-      "Entretien obligatoire à l'ambassade. Visa valable 10 ans, séjour max 6 mois.",
     documents: [
-      "Passeport biométrique",
-      "Formulaire DS-160",
-      "Photo récente",
-      "Confirmation RDV ambassade",
-      "Preuve financière",
-      "Preuves de liens avec le pays",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "30 à 60 jours",
-    frais: "185 USD",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  Canada: {
-    drapeau: "🇨🇦",
-    region: "Amérique du Nord",
-    typeVisa: "Visa visiteur requis (AVE)",
-    couleur: "#D97706",
-    conditions:
-      "Autorisation de voyage électronique ou visa visiteur selon le cas.",
+
+  Germany: {
+    supported: true,
+    flag: "🇩🇪",
+    title: "Germany",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport valide",
-      "Formulaire IMM 5257",
-      "Preuve de fonds",
-      "Biométrie",
-      "Lettre d'invitation (si applicable)",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "28 jours ouvrables",
-    frais: "100 CAD",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  "Royaume-Uni": {
-    drapeau: "🇬🇧",
-    region: "Europe",
-    typeVisa: "Standard Visitor Visa requis",
-    couleur: "#0891B2",
-    conditions:
-      "Post-Brexit : visa obligatoire pour les ressortissants tunisiens.",
+
+  Spain: {
+    supported: true,
+    flag: "🇪🇸",
+    title: "Spain",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport biométrique",
-      "Formulaire Gov.uk",
-      "Relevé bancaire 3 mois",
-      "Biométrie UK Visa Center",
-      "Hébergement confirmé",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "15 à 20 jours",
-    frais: "115 GBP",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  Allemagne: {
-    drapeau: "🇩🇪",
-    region: "Europe",
-    typeVisa: "Visa Schengen requis",
-    couleur: "#2563EB",
-    conditions:
-      "Identique au visa Schengen France, via le consulat allemand si destination principale.",
+
+  Italy: {
+    supported: true,
+    flag: "🇮🇹",
+    title: "Italy",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport valide 6 mois",
-      "Formulaire Schengen",
-      "Assurance voyage",
-      "Relevés bancaires",
-      "Justificatif d'emploi",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "15 jours ouvrables",
-    frais: "80 €",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  Australie: {
-    drapeau: "🇦🇺",
-    region: "Océanie",
-    typeVisa: "Visitor Visa requis",
-    couleur: "#059669",
-    conditions:
-      "Visa électronique via ImmiAccount. Séjour max 3 mois par visite.",
+
+  Belgium: {
+    supported: true,
+    flag: "🇧🇪",
+    title: "Belgium",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport valide",
-      "Formulaire ImmiAccount",
-      "Preuve financière",
-      "Réservation",
-      "Assurance santé",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "20 à 30 jours",
-    frais: "145 AUD",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  Turquie: {
-    drapeau: "🇹🇷",
-    region: "Moyen-Orient / Europe",
-    typeVisa: "e-Visa requis",
-    couleur: "#DC2626",
-    conditions: "e-Visa disponible en ligne. Simple et rapide.",
+
+  Netherlands: {
+    supported: true,
+    flag: "🇳🇱",
+    title: "Netherlands",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport valide 6 mois",
-      "Adresse email valide",
-      "Carte bancaire pour paiement",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "1 à 3 jours",
-    frais: "50 USD",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
-  Tunisie: {
-    drapeau: "🇹🇳",
-    region: "Afrique du Nord",
-    typeVisa: "Aucun visa requis",
-    couleur: "#059669",
-    conditions: "Vous êtes déjà en Tunisie ! Vous pouvez y résider librement.",
-    documents: [],
-    delai: "N/A",
-    frais: "Gratuit",
-    lien: "",
-  },
-  Maroc: {
-    drapeau: "🇲🇦",
-    region: "Afrique du Nord",
-    typeVisa: "Aucun visa requis",
-    couleur: "#059669",
-    conditions:
-      "Les ressortissants tunisiens peuvent entrer au Maroc sans visa pour un séjour de 90 jours.",
-    documents: ["Passeport valide"],
-    delai: "Immédiat",
-    frais: "Gratuit",
-    lien: "",
-  },
-  Espagne: {
-    drapeau: "🇪🇸",
-    region: "Europe",
-    typeVisa: "Visa Schengen requis",
-    couleur: "#2563EB",
-    conditions:
-      "Visa Schengen via le consulat espagnol si l'Espagne est votre destination principale.",
+
+  Portugal: {
+    supported: true,
+    flag: "🇵🇹",
+    title: "Portugal",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
     documents: [
-      "Passeport valide 6 mois",
-      "Formulaire Schengen",
-      "Assurance voyage 30 000 €",
-      "Relevés bancaires",
-      "Réservation hôtel / hébergement",
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
     ],
-    delai: "15 jours ouvrables",
-    frais: "80 €",
-    lien: "https://usimmigrationassistance.com/apply/?gadid=773046734052&gad_campaignid=23001904453",
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
+  },
+
+  Switzerland: {
+    supported: true,
+    flag: "🇨🇭",
+    title: "Switzerland",
+    service: "Schengen Visa",
+    type: "Visa required",
+    procedure: [
+      "Prepare the required documents",
+      "Complete the visa application form",
+      "Follow the official submission process",
+    ],
+    documents: [
+      "Valid passport",
+      "Passport photo",
+      "Travel insurance",
+      "Accommodation details",
+      "Financial proof",
+    ],
+    ctaLabel: "Start application",
+    ctaType: "internal",
+    ctaLink: "/services",
   },
 };
 
-const REGIONS = [
-  "Tous",
-  "Europe",
-  "Amérique du Nord",
-  "Océanie",
-  "Afrique du Nord",
-  "Moyen-Orient / Europe",
-];
+function getCountryInfo(name) {
+  if (COUNTRY_DETAILS[name]) return COUNTRY_DETAILS[name];
+
+  if (SCHENGEN_COUNTRIES.includes(name)) {
+    return {
+      supported: true,
+      flag: "🇪🇺",
+      title: name,
+      service: "Schengen Visa",
+      type: "Visa required",
+      procedure: [
+        "Prepare the required documents",
+        "Complete the visa application form",
+        "Follow the official submission process",
+      ],
+      documents: [
+        "Valid passport",
+        "Passport photo",
+        "Travel insurance",
+        "Accommodation details",
+        "Financial proof",
+      ],
+      ctaLabel: "Start application",
+      ctaType: "internal",
+      ctaLink: "/services",
+    };
+  }
+
+  return {
+    supported: false,
+    title: name,
+    service: "Not covered",
+    message: "This destination is currently not covered by our services.",
+  };
+}
 
 export default function VisaMap() {
-  const [search, setSearch] = useState("");
-  const [region, setRegion] = useState("Tous");
-  const [selected, setSelected] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
-  const pays = Object.entries(PAYS_DATA);
-
-  const filtered = pays.filter(([nom, data]) => {
-    const matchSearch = nom.toLowerCase().includes(search.toLowerCase());
-    const matchRegion = region === "Tous" || data.region === region;
-    return matchSearch && matchRegion;
-  });
-
-  const info = selected ? PAYS_DATA[selected] : null;
+  const info = selectedCountry ? getCountryInfo(selectedCountry) : null;
 
   return (
     <div
@@ -205,381 +293,314 @@ export default function VisaMap() {
     >
       <div className="container">
         <div className="section-header">
-          <span className="badge">Carte interactive</span>
-          <h1 className="section-title">Carte des visas</h1>
+          <span className="badge">Interactive Map</span>
+          <h1 className="section-title">Visa & Travel Services Map</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Sélectionnez votre destination pour connaître les conditions
-            d'entrée, les documents requis et accéder au portail officiel.
+            Click on a destination to view the service type, main procedure,
+            required documents, and the next application step.
           </p>
         </div>
 
-        {/* Filtres */}
         <div
-          style={{
-            background: "white",
-            border: "1px solid var(--gray-200)",
-            borderRadius: "var(--radius-md)",
-            padding: "20px 24px",
-            marginBottom: 32,
-            boxShadow: "var(--shadow-sm)",
-            display: "flex",
-            gap: 16,
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          {/* Recherche */}
-          <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
-            <FiSearch
-              size={16}
-              style={{
-                position: "absolute",
-                left: 12,
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "var(--gray-400)",
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Rechercher un pays..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="input-field"
-              style={{ paddingLeft: 38 }}
-            />
-          </div>
-
-          {/* Filtre région */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {REGIONS.map((r) => (
-              <button
-                key={r}
-                onClick={() => setRegion(r)}
-                style={{
-                  padding: "7px 14px",
-                  borderRadius: 20,
-                  fontSize: 12,
-                  border:
-                    region === r
-                      ? "1.5px solid var(--blue-600)"
-                      : "1.5px solid var(--gray-200)",
-                  background: region === r ? "var(--blue-600)" : "white",
-                  color: region === r ? "white" : "var(--gray-600)",
-                  cursor: "pointer",
-                  fontWeight: 500,
-                  transition: "all 0.15s",
-                  fontFamily: "var(--font-heading)",
-                }}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div
+          className="map-layout"
           style={{
             display: "grid",
-            gridTemplateColumns: selected ? "1fr 380px" : "1fr",
+            gridTemplateColumns: "1.3fr 0.9fr",
             gap: 24,
             alignItems: "start",
           }}
         >
-          {/* ── Grille pays ── */}
+          {/* Map */}
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-              gap: 14,
+              background: "white",
+              border: "1px solid var(--gray-200)",
+              borderRadius: "var(--radius-lg)",
+              padding: "18px",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
-            {filtered.map(([nom, data]) => (
-              <button
-                key={nom}
-                onClick={() => setSelected(nom === selected ? null : nom)}
-                style={{
-                  background: "white",
-                  border:
-                    selected === nom
-                      ? `2px solid ${data.couleur}`
-                      : "1.5px solid var(--gray-200)",
-                  borderRadius: "var(--radius-md)",
-                  padding: "16px 14px",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  transition: "all 0.15s",
-                  boxShadow:
-                    selected === nom
-                      ? `0 4px 16px ${data.couleur}22`
-                      : "var(--shadow-sm)",
-                  transform: selected === nom ? "translateY(-2px)" : "none",
-                }}
-                onMouseEnter={(e) => {
-                  if (selected !== nom) {
-                    e.currentTarget.style.boxShadow = "var(--shadow-md)";
-                    e.currentTarget.style.transform = "translateY(-1px)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (selected !== nom) {
-                    e.currentTarget.style.boxShadow = "var(--shadow-sm)";
-                    e.currentTarget.style.transform = "none";
-                  }
-                }}
-              >
-                <div style={{ fontSize: 32, marginBottom: 8 }}>
-                  {data.drapeau}
-                </div>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "var(--gray-800)",
-                    fontFamily: "var(--font-heading)",
-                    marginBottom: 6,
-                  }}
-                >
-                  {nom}
-                </p>
+            <ComposableMap
+              projection="geoMercator"
+              projectionConfig={{ scale: 120 }}
+              style={{ width: "100%", height: "auto" }}
+            >
+              <Geographies geography={geoUrl}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const countryName = geo.properties.name;
+                    const isUSA = countryName === "United States of America";
+                    const isSchengen = SCHENGEN_COUNTRIES.includes(countryName);
+                    const isSupported = isUSA || isSchengen;
+
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        onClick={() => setSelectedCountry(countryName)}
+                        style={{
+                          default: {
+                            fill: isSupported ? "#39679F" : "#D1D5DB",
+                            stroke: "#FFFFFF",
+                            strokeWidth: 0.5,
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: isSupported ? "#233B6E" : "#9CA3AF",
+                            stroke: "#FFFFFF",
+                            strokeWidth: 0.5,
+                            outline: "none",
+                            cursor: "pointer",
+                          },
+                          pressed: {
+                            fill: isSupported ? "#1B2F58" : "#9CA3AF",
+                            stroke: "#FFFFFF",
+                            strokeWidth: 0.5,
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ComposableMap>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 18,
+                marginTop: 14,
+                flexWrap: "wrap",
+                fontSize: 13,
+                color: "var(--gray-600)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span
                   style={{
+                    width: 14,
+                    height: 14,
+                    background: "#39679F",
+                    borderRadius: 3,
                     display: "inline-block",
-                    background: data.couleur + "14",
-                    color: data.couleur,
-                    padding: "2px 8px",
-                    borderRadius: 12,
-                    fontSize: 10,
-                    fontWeight: 600,
+                  }}
+                />
+                Supported destinations
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span
+                  style={{
+                    width: 14,
+                    height: 14,
+                    background: "#D1D5DB",
+                    borderRadius: 3,
+                    display: "inline-block",
+                  }}
+                />
+                Not covered
+              </div>
+            </div>
+          </div>
+
+          {/* Details panel */}
+          <div
+            style={{
+              background: "white",
+              border: "1px solid var(--gray-200)",
+              borderRadius: "var(--radius-lg)",
+              boxShadow: "var(--shadow-md)",
+              overflow: "hidden",
+              minHeight: 420,
+            }}
+          >
+            {info ? (
+              <>
+                <div
+                  style={{
+                    background: info.supported
+                      ? "linear-gradient(135deg, var(--blue-800), var(--blue-600))"
+                      : "var(--gray-400)",
+                    color: "white",
+                    padding: "22px 24px",
                   }}
                 >
-                  {data.typeVisa.split(" ").slice(0, 2).join(" ")}
-                </span>
-              </button>
-            ))}
+                  <h3 style={{ color: "white", marginBottom: 6 }}>
+                    {info.title}
+                  </h3>
+                  <p style={{ fontSize: 13, opacity: 0.9 }}>{info.service}</p>
+                </div>
 
-            {filtered.length === 0 && (
-              <div
-                style={{
-                  gridColumn: "1 / -1",
-                  textAlign: "center",
-                  padding: 48,
-                  color: "var(--gray-500)",
-                  fontSize: 15,
-                }}
-              >
-                Aucun pays trouvé pour "{search}"
+                <div style={{ padding: 24 }}>
+                  {info.supported ? (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 8,
+                          marginBottom: 16,
+                          color: "var(--gray-700)",
+                          fontSize: 14,
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        <FiInfo
+                          size={15}
+                          style={{ marginTop: 3, flexShrink: 0 }}
+                          color="var(--blue-700)"
+                        />
+                        <span>
+                          <strong>Type:</strong> {info.type}
+                        </span>
+                      </div>
+
+                      <p
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                          color: "var(--gray-500)",
+                          marginBottom: 10,
+                        }}
+                      >
+                        Procedure
+                      </p>
+                      <ul style={{ listStyle: "none", marginBottom: 18 }}>
+                        {info.procedure.map((step, i) => (
+                          <li
+                            key={i}
+                            style={{
+                              padding: "4px 0",
+                              fontSize: 13,
+                              color: "var(--gray-700)",
+                              lineHeight: 1.6,
+                            }}
+                          >
+                            {i + 1}. {step}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <p
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                          color: "var(--gray-500)",
+                          marginBottom: 10,
+                        }}
+                      >
+                        Main documents
+                      </p>
+                      <ul style={{ listStyle: "none", marginBottom: 22 }}>
+                        {info.documents.map((doc, i) => (
+                          <li
+                            key={i}
+                            style={{
+                              padding: "4px 0",
+                              fontSize: 13,
+                              color: "var(--gray-700)",
+                              lineHeight: 1.6,
+                            }}
+                          >
+                            • {doc}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {info.ctaType === "external" ? (
+                        <a
+                          href={info.ctaLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-primary"
+                          style={{
+                            width: "100%",
+                            justifyContent: "center",
+                            display: "inline-flex",
+                          }}
+                        >
+                          <FiExternalLink size={14} /> {info.ctaLabel}
+                        </a>
+                      ) : (
+                        <Link
+                          to={info.ctaLink}
+                          className="btn-primary"
+                          style={{
+                            width: "100%",
+                            justifyContent: "center",
+                            display: "inline-flex",
+                          }}
+                        >
+                          {info.ctaLabel}
+                        </Link>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <p
+                        style={{
+                          fontSize: 14,
+                          color: "var(--gray-700)",
+                          lineHeight: 1.7,
+                          marginBottom: 20,
+                        }}
+                      >
+                        {info.message}
+                      </p>
+
+                      <Link
+                        to="/contact"
+                        className="btn-outline"
+                        style={{
+                          width: "100%",
+                          justifyContent: "center",
+                          display: "inline-flex",
+                        }}
+                      >
+                        Contact us
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div style={{ padding: 24 }}>
+                <h3
+                  style={{
+                    marginBottom: 10,
+                    fontFamily: "var(--font-heading)",
+                    color: "var(--gray-800)",
+                  }}
+                >
+                  Select a country
+                </h3>
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: "var(--gray-600)",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  Click on a country on the map to view the visa procedure,
+                  required documents, and the next step for the application.
+                </p>
               </div>
             )}
           </div>
-
-          {/* ── Panneau détail ── */}
-          {selected && info && (
-            <div
-              style={{
-                background: "white",
-                border: "1px solid var(--gray-200)",
-                borderRadius: "var(--radius-lg)",
-                overflow: "hidden",
-                boxShadow: "var(--shadow-lg)",
-                position: "sticky",
-                top: 80,
-              }}
-            >
-              {/* Header */}
-              <div
-                style={{
-                  background: info.couleur,
-                  padding: "24px 24px",
-                  color: "white",
-                }}
-              >
-                <div style={{ fontSize: 40, marginBottom: 10 }}>
-                  {info.drapeau}
-                </div>
-                <h3
-                  style={{
-                    color: "white",
-                    fontSize: "1.3rem",
-                    marginBottom: 4,
-                  }}
-                >
-                  {selected}
-                </h3>
-                <p style={{ fontSize: 13, opacity: 0.85 }}>{info.region}</p>
-                <div
-                  style={{
-                    display: "inline-block",
-                    marginTop: 10,
-                    background: "rgba(255,255,255,0.2)",
-                    padding: "4px 14px",
-                    borderRadius: 20,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    border: "1px solid rgba(255,255,255,0.3)",
-                  }}
-                >
-                  {info.typeVisa}
-                </div>
-              </div>
-
-              {/* Corps */}
-              <div style={{ padding: "20px 24px" }}>
-                {/* Conditions */}
-                <div
-                  style={{
-                    background: "var(--gray-50)",
-                    borderRadius: 10,
-                    padding: "12px 16px",
-                    marginBottom: 18,
-                    display: "flex",
-                    gap: 10,
-                    fontSize: 13,
-                  }}
-                >
-                  <FiInfo
-                    size={15}
-                    color="var(--blue-500)"
-                    style={{ flexShrink: 0, marginTop: 1 }}
-                  />
-                  <p style={{ color: "var(--gray-700)", lineHeight: 1.55 }}>
-                    {info.conditions}
-                  </p>
-                </div>
-
-                {/* Documents */}
-                {info.documents.length > 0 && (
-                  <>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: "var(--gray-500)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                        marginBottom: 10,
-                      }}
-                    >
-                      Documents requis
-                    </p>
-                    <ul style={{ listStyle: "none", marginBottom: 18 }}>
-                      {info.documents.map((d, i) => (
-                        <li
-                          key={i}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                            padding: "4px 0",
-                            fontSize: 13,
-                            color: "var(--gray-700)",
-                          }}
-                        >
-                          <span
-                            style={{
-                              width: 6,
-                              height: 6,
-                              borderRadius: "50%",
-                              background: info.couleur,
-                              flexShrink: 0,
-                            }}
-                          />
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-
-                {/* Délai & frais */}
-                <div style={{ display: "flex", gap: 10, marginBottom: 18 }}>
-                  <div
-                    style={{
-                      flex: 1,
-                      background: info.couleur + "10",
-                      borderRadius: 10,
-                      padding: "10px 14px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: 11,
-                        color: "var(--gray-500)",
-                        marginBottom: 3,
-                      }}
-                    >
-                      Délai moyen
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: info.couleur,
-                      }}
-                    >
-                      {info.delai}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      flex: 1,
-                      background: "var(--gray-50)",
-                      borderRadius: 10,
-                      padding: "10px 14px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: 11,
-                        color: "var(--gray-500)",
-                        marginBottom: 3,
-                      }}
-                    >
-                      Frais consulaires
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: "var(--gray-800)",
-                      }}
-                    >
-                      {info.frais}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Boutons */}
-                <div style={{ display: "flex", gap: 10 }}>
-                  {info.lien && (
-                    <a
-                      href={info.lien}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn-primary"
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        background: info.couleur,
-                        fontSize: 13,
-                        padding: "10px",
-                      }}
-                    >
-                      <FiExternalLink size={13} /> Portail officiel
-                    </a>
-                  )}
-                  <button
-                    className="btn-ghost"
-                    onClick={() => (window.location.href = "/visa-scoring")}
-                    style={{ flex: 1, justifyContent: "center", fontSize: 13 }}
-                  >
-                    Analyser mon dossier
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
+
+        <style>{`
+          @media (max-width: 960px) {
+            .map-layout {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}</style>
       </div>
     </div>
   );

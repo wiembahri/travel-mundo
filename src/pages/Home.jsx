@@ -3,7 +3,6 @@ import {
   FiArrowRight,
   FiMapPin,
   FiFileText,
-  FiCpu,
   FiShield,
   FiCheckCircle,
   FiClock,
@@ -12,81 +11,81 @@ import {
 
 const FEATURES = [
   {
-    icon: <FiMapPin size={22} />,
-    title: "Carte interactive des visas",
-    desc: "Sélectionnez n'importe quel pays sur la carte et obtenez instantanément le type de visa requis, les documents nécessaires et le lien officiel.",
-    to: "/visa-map",
+    icon: <FiFileText size={22} />,
+    title: "Schengen Visa",
+    desc: "Guided support for Schengen visa applications, including document preparation and information review.",
+    to: "/services",
     bg: "var(--blue-50)",
     color: "var(--blue-600)",
   },
   {
-    icon: <FiCpu size={22} />,
-    title: "Scoring IA — Visa Readiness",
-    desc: "Analysez votre profil (nationalité, finances, historique) et obtenez un score de 0 à 100 avec des recommandations concrètes pour renforcer votre dossier.",
-    to: "/visa-scoring",
-    bg: "#F0FDF4",
-    color: "#16A34A",
-  },
-  {
-    icon: <FiFileText size={22} />,
-    title: "Suivi de dossier en ligne",
-    desc: "Suivez l'état de votre demande en temps réel. Chaque changement de statut vous est notifié automatiquement.",
-    to: "/suivi",
-    bg: "#FFF7ED",
-    color: "#EA580C",
-  },
-  {
     icon: <FiShield size={22} />,
-    title: "Services centralisés",
-    desc: "Visa Schengen, USA,  et passeport  — tout au même endroit, avec redirection vers les portails officiels.",
+    title: "U.S. Visa",
+    desc: "Application assistance for U.S. visas based on the purpose of travel, including tourism, business, transit, and study.",
     to: "/services",
-    bg: "#FDF4FF",
-    color: "#9333EA",
+    bg: "var(--blue-50)",
+    color: "var(--blue-700)",
+  },
+  {
+    icon: <FiMapPin size={22} />,
+    title: "ETA / ESTA",
+    desc: "Support for electronic travel authorizations with guided form completion and review before submission.",
+    to: "/services",
+    bg: "var(--blue-50)",
+    color: "var(--blue-600)",
+  },
+  {
+    icon: <FiUsers size={22} />,
+    title: "Passport",
+    desc: "Assistance with passport applications, renewals, and preparation before official submission.",
+    to: "/services",
+    bg: "var(--blue-50)",
+    color: "var(--blue-700)",
   },
 ];
 
 const STATS = [
   {
-    value: "5 000+",
-    label: "Dossiers traités",
+    value: "5,000+",
+    label: "Applications handled",
     icon: <FiFileText size={18} />,
   },
-  { value: "120+", label: "Pays couverts", icon: <FiMapPin size={18} /> },
+  { value: "120+", label: "Countries covered", icon: <FiMapPin size={18} /> },
   {
     value: "98%",
-    label: "Taux de satisfaction",
+    label: "Client satisfaction",
     icon: <FiCheckCircle size={18} />,
   },
-  { value: "48h", label: "Délai moyen réponse", icon: <FiClock size={18} /> },
+  { value: "24/7", label: "Support availability", icon: <FiClock size={18} /> },
 ];
 
 const HOW_IT_WORKS = [
   {
     num: "01",
-    title: "Analysez votre profil",
-    desc: "Remplissez le formulaire de scoring en 3 étapes. L'IA évalue votre dossier.",
+    title: "Choose your service",
+    desc: "Select the service that fits your needs: Schengen Visa, U.S. Visa, Passport, or ETA / ESTA.",
   },
   {
     num: "02",
-    title: "Recevez votre rapport",
-    desc: "Obtenez un score, les points faibles identifiés et les recommandations précises.",
+    title: "Complete your application",
+    desc: "Fill in the required information through a simple and guided process.",
   },
   {
     num: "03",
-    title: "Soumettez votre demande",
-    desc: "Accédez au portail officiel correspondant depuis notre plateforme.",
+    title: "Review and preparation",
+    desc: "Your information is checked to help reduce errors and prepare your application correctly.",
   },
   {
     num: "04",
-    title: "Suivez en temps réel",
-    desc: "Suivez l'avancement de votre dossier via votre numéro de référence.",
+    title: "Submit and track",
+    desc: "Receive the next steps for official submission and follow the progress of your request.",
   },
 ];
 
 export default function Home() {
   return (
     <div>
-      {/* ══ HERO ══════════════════════════════════════ */}
+      {/* HERO */}
       <section
         style={{
           background:
@@ -96,7 +95,6 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        {/* Cercles décoratifs */}
         <div
           style={{
             position: "absolute",
@@ -135,7 +133,7 @@ export default function Home() {
         />
 
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ maxWidth: 700 }}>
+          <div style={{ maxWidth: 720 }}>
             <span
               style={{
                 display: "inline-flex",
@@ -152,7 +150,7 @@ export default function Home() {
                 marginBottom: 28,
               }}
             >
-              <FiShield size={13} /> Agence officielle — Visa & Passeport
+              <FiShield size={13} /> Private application assistance
             </span>
 
             <h1
@@ -165,7 +163,7 @@ export default function Home() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              Vos démarches administratives{" "}
+              Visa and passport applications{" "}
               <span
                 style={{
                   color: "var(--blue-300)",
@@ -173,28 +171,27 @@ export default function Home() {
                   paddingBottom: 2,
                 }}
               >
-                simplifiées
-              </span>{" "}
-              avec l'IA
+                made simpler
+              </span>
             </h1>
 
             <p
               style={{
                 fontSize: "1.15rem",
                 color: "rgba(255,255,255,0.82)",
-                maxWidth: 540,
+                maxWidth: 620,
                 marginBottom: 40,
                 lineHeight: 1.75,
               }}
             >
-              Travel Mundo centralise tous vos services visa et passeport avec
-              un assistant IA, un scoring de dossier et un suivi en temps réel.
-              Aucune modification des portails officiels.
+              Travel Mundo supports clients with Schengen Visa, U.S. Visa,
+              Passport, and ETA / ESTA applications through guided forms,
+              information review, and clear submission steps.
             </p>
 
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link
-                to="/visa-scoring"
+                to="/services"
                 className="btn-primary"
                 style={{
                   background: "white",
@@ -203,21 +200,20 @@ export default function Home() {
                   fontSize: 15,
                 }}
               >
-                Analyser mon dossier <FiArrowRight />
+                Explore services <FiArrowRight />
               </Link>
               <Link
-                to="/services"
+                to="/contact"
                 className="btn-outline"
                 style={{
                   borderColor: "rgba(255,255,255,0.45)",
                   color: "white",
                 }}
               >
-                Voir les services
+                Contact us
               </Link>
             </div>
 
-            {/* Mini proof */}
             <div
               style={{
                 marginTop: 44,
@@ -227,10 +223,10 @@ export default function Home() {
               }}
             >
               {[
-                "Sans inscription requise",
-                "Résultat en 5 minutes",
-                "Rapport PDF gratuit",
-              ].map((t, i) => (
+                "Guided application process",
+                "Information review before submission",
+                "Official submission steps included",
+              ].map((text, i) => (
                 <div
                   key={i}
                   style={{
@@ -241,7 +237,7 @@ export default function Home() {
                     color: "rgba(255,255,255,0.75)",
                   }}
                 >
-                  <FiCheckCircle size={14} color="var(--blue-300)" /> {t}
+                  <FiCheckCircle size={14} color="var(--blue-300)" /> {text}
                 </div>
               ))}
             </div>
@@ -249,7 +245,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ STATS ═════════════════════════════════════ */}
+      {/* STATS */}
       <section
         style={{
           background: "white",
@@ -309,15 +305,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ FEATURES ══════════════════════════════════ */}
+      {/* FEATURES */}
       <section style={{ padding: "88px 0", background: "var(--gray-50)" }}>
         <div className="container">
           <div className="section-header">
-            <span className="badge">Nos fonctionnalités</span>
-            <h2 className="section-title">Tout ce dont vous avez besoin</h2>
+            <span className="badge">What we offer</span>
+            <h2 className="section-title">Application support services</h2>
             <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              Une plateforme intelligente qui automatise vos démarches et vous
-              guide à chaque étape du processus.
+              We help simplify application processes by guiding users through
+              forms, reviewing information, and preparing them for official
+              submission.
             </p>
           </div>
 
@@ -376,7 +373,7 @@ export default function Home() {
                       fontFamily: "var(--font-heading)",
                     }}
                   >
-                    En savoir plus <FiArrowRight size={13} />
+                    Learn more <FiArrowRight size={13} />
                   </span>
                 </div>
               </Link>
@@ -385,15 +382,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ HOW IT WORKS ══════════════════════════════ */}
+      {/* HOW IT WORKS */}
       <section style={{ padding: "88px 0", background: "white" }}>
         <div className="container">
           <div className="section-header">
-            <span className="badge">Comment ça marche</span>
-            <h2 className="section-title">Simple en 4 étapes</h2>
+            <span className="badge">How it works</span>
+            <h2 className="section-title">Your application in 4 steps</h2>
             <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              De l'analyse de votre dossier à la décision finale, nous vous
-              accompagnons à chaque étape.
+              From choosing the right service to preparing for submission, the
+              process is designed to be clear and easy to follow.
             </p>
           </div>
 
@@ -451,7 +448,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ CTA ═══════════════════════════════════════ */}
+      {/* CTA */}
       <section
         style={{
           padding: "88px 0",
@@ -482,6 +479,7 @@ export default function Home() {
               <FiUsers size={24} color="white" />
             </div>
           </div>
+
           <h2
             style={{
               color: "white",
@@ -490,20 +488,21 @@ export default function Home() {
               fontFamily: "var(--font-heading)",
             }}
           >
-            Prêt à simplifier vos démarches ?
+            Ready to get started?
           </h2>
+
           <p
             style={{
               color: "var(--blue-200)",
-              marginBottom: 36,
               fontSize: "1.05rem",
-              maxWidth: 480,
+              maxWidth: 560,
               margin: "0 auto 36px",
             }}
           >
-            Obtenez votre Visa Readiness Report personnalisé en moins de 5
-            minutes.
+            Explore our services and get guided support for your visa, passport,
+            ETA, or ESTA application.
           </p>
+
           <div
             style={{
               display: "flex",
@@ -513,7 +512,7 @@ export default function Home() {
             }}
           >
             <Link
-              to="/visa-scoring"
+              to="/services"
               className="btn-primary"
               style={{
                 background: "white",
@@ -522,7 +521,7 @@ export default function Home() {
                 padding: "14px 32px",
               }}
             >
-              Commencer l'analyse <FiArrowRight />
+              View services <FiArrowRight />
             </Link>
             <Link
               to="/contact"
@@ -533,7 +532,7 @@ export default function Home() {
                 fontSize: 16,
               }}
             >
-              Nous contacter
+              Contact us
             </Link>
           </div>
         </div>
@@ -541,3 +540,4 @@ export default function Home() {
     </div>
   );
 }
+  
