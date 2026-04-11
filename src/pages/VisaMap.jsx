@@ -1,7 +1,14 @@
 ﻿import { useState } from "react";
-import { FiExternalLink, FiInfo } from "react-icons/fi";
+import { FiExternalLink, FiInfo, FiZoomIn, FiZoomOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+  Marker,
+  Annotation,
+} from "react-simple-maps";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -56,190 +63,6 @@ const COUNTRY_DETAILS = {
     ctaType: "external",
     ctaLink: "https://usimmigrationassistance.com/",
   },
-
-  France: {
-    supported: true,
-    flag: "🇫🇷",
-    title: "France",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Germany: {
-    supported: true,
-    flag: "🇩🇪",
-    title: "Germany",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Spain: {
-    supported: true,
-    flag: "🇪🇸",
-    title: "Spain",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Italy: {
-    supported: true,
-    flag: "🇮🇹",
-    title: "Italy",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Belgium: {
-    supported: true,
-    flag: "🇧🇪",
-    title: "Belgium",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Netherlands: {
-    supported: true,
-    flag: "🇳🇱",
-    title: "Netherlands",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Portugal: {
-    supported: true,
-    flag: "🇵🇹",
-    title: "Portugal",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
-
-  Switzerland: {
-    supported: true,
-    flag: "🇨🇭",
-    title: "Switzerland",
-    service: "Schengen Visa",
-    type: "Visa required",
-    procedure: [
-      "Prepare the required documents",
-      "Complete the visa application form",
-      "Follow the official submission process",
-    ],
-    documents: [
-      "Valid passport",
-      "Passport photo",
-      "Travel insurance",
-      "Accommodation details",
-      "Financial proof",
-    ],
-    ctaLabel: "Start application",
-    ctaType: "internal",
-    ctaLink: "/services",
-  },
 };
 
 function getCountryInfo(name) {
@@ -280,8 +103,23 @@ function getCountryInfo(name) {
 
 export default function VisaMap() {
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [position, setPosition] = useState({ coordinates: [10, 20], zoom: 1 });
 
   const info = selectedCountry ? getCountryInfo(selectedCountry) : null;
+
+  const handleZoomIn = () => {
+    if (position.zoom >= 4) return;
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.4 }));
+  };
+
+  const handleZoomOut = () => {
+    if (position.zoom <= 1) return;
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 1.4 }));
+  };
+
+  const handleMoveEnd = (pos) => {
+    setPosition(pos);
+  };
 
   return (
     <div
@@ -310,7 +148,6 @@ export default function VisaMap() {
             alignItems: "start",
           }}
         >
-          {/* Map */}
           <div
             style={{
               background: "white",
@@ -320,50 +157,126 @@ export default function VisaMap() {
               boxShadow: "var(--shadow-sm)",
             }}
           >
+            {/* Zoom buttons */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 8,
+                marginBottom: 12,
+              }}
+            >
+              <button
+                onClick={handleZoomOut}
+                className="btn-ghost"
+                style={{ padding: "8px 12px" }}
+              >
+                <FiZoomOut size={14} />
+              </button>
+              <button
+                onClick={handleZoomIn}
+                className="btn-ghost"
+                style={{ padding: "8px 12px" }}
+              >
+                <FiZoomIn size={14} />
+              </button>
+            </div>
+
             <ComposableMap
               projection="geoMercator"
               projectionConfig={{ scale: 120 }}
               style={{ width: "100%", height: "auto" }}
             >
-              <Geographies geography={geoUrl}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const countryName = geo.properties.name;
-                    const isUSA = countryName === "United States of America";
-                    const isSchengen = SCHENGEN_COUNTRIES.includes(countryName);
-                    const isSupported = isUSA || isSchengen;
+              <ZoomableGroup
+                zoom={position.zoom}
+                center={position.coordinates}
+                onMoveEnd={handleMoveEnd}
+              >
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => {
+                      const countryName = geo.properties.name;
+                      const isUSA = countryName === "United States of America";
+                      const isSchengen =
+                        SCHENGEN_COUNTRIES.includes(countryName);
+                      const isSupported = isUSA || isSchengen;
 
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        onClick={() => setSelectedCountry(countryName)}
-                        style={{
-                          default: {
-                            fill: isSupported ? "#39679F" : "#D1D5DB",
-                            stroke: "#FFFFFF",
-                            strokeWidth: 0.5,
-                            outline: "none",
-                          },
-                          hover: {
-                            fill: isSupported ? "#233B6E" : "#9CA3AF",
-                            stroke: "#FFFFFF",
-                            strokeWidth: 0.5,
-                            outline: "none",
-                            cursor: "pointer",
-                          },
-                          pressed: {
-                            fill: isSupported ? "#1B2F58" : "#9CA3AF",
-                            stroke: "#FFFFFF",
-                            strokeWidth: 0.5,
-                            outline: "none",
-                          },
-                        }}
-                      />
-                    );
-                  })
-                }
-              </Geographies>
+                      return (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          onClick={() => setSelectedCountry(countryName)}
+                          style={{
+                            default: {
+                              fill: isSupported ? "#39679F" : "#D1D5DB",
+                              stroke: "#FFFFFF",
+                              strokeWidth: 0.5,
+                              outline: "none",
+                            },
+                            hover: {
+                              fill: isSupported ? "#233B6E" : "#9CA3AF",
+                              stroke: "#FFFFFF",
+                              strokeWidth: 0.5,
+                              outline: "none",
+                              cursor: "pointer",
+                            },
+                            pressed: {
+                              fill: isSupported ? "#1B2F58" : "#9CA3AF",
+                              stroke: "#FFFFFF",
+                              strokeWidth: 0.5,
+                              outline: "none",
+                            },
+                          }}
+                        />
+                      );
+                    })
+                  }
+                </Geographies>
+
+                {/* USA label */}
+                <Marker coordinates={[-98, 39]}>
+                  <g>
+                    <circle r={4} fill="#1B2F58" />
+                    <text
+                      textAnchor="middle"
+                      y={-10}
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        fill: "#1B2F58",
+                        fontSize: "10px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      USA
+                    </text>
+                  </g>
+                </Marker>
+
+                {/* Schengen label */}
+                <Annotation
+                  subject={[10, 52]}
+                  dx={30}
+                  dy={-20}
+                  connectorProps={{
+                    stroke: "#233B6E",
+                    strokeWidth: 1,
+                    strokeLinecap: "round",
+                  }}
+                >
+                  <text
+                    x={4}
+                    fontSize={11}
+                    alignmentBaseline="middle"
+                    fill="#1B2F58"
+                    style={{
+                      fontFamily: "var(--font-heading)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Schengen Area
+                  </text>
+                </Annotation>
+              </ZoomableGroup>
             </ComposableMap>
 
             <div
@@ -404,7 +317,6 @@ export default function VisaMap() {
             </div>
           </div>
 
-          {/* Details panel */}
           <div
             style={{
               background: "white",

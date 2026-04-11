@@ -163,15 +163,14 @@ export default function Home() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              Visa and passport applications{" "}
+              Streamlined solutions for{" "}
               <span
                 style={{
                   color: "var(--blue-300)",
-                  borderBottom: "3px solid var(--blue-400)",
                   paddingBottom: 2,
                 }}
               >
-                made simpler
+                visa and passport applications worldwide
               </span>
             </h1>
 
@@ -184,9 +183,9 @@ export default function Home() {
                 lineHeight: 1.75,
               }}
             >
-              Travel Mundo supports clients with Schengen Visa, U.S. Visa,
-              Passport, and ETA / ESTA applications through guided forms,
-              information review, and clear submission steps.
+              Travel Mundo provides structured support for Schengen visas, U.S.
+              visas, passports, and ETA / ESTA applications through guided
+              steps, document review, and clear submission assistance.
             </p>
 
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
@@ -540,4 +539,3 @@ export default function Home() {
     </div>
   );
 }
-  

@@ -6,31 +6,207 @@ import {
   FiAward,
   FiCheckCircle,
   FiRefreshCw,
+  FiTrendingUp,
+  FiAlertCircle,
 } from "react-icons/fi";
 import { calculerScoreVisa } from "../services/scoring";
+import ScoreGauge from "../components/ScoreGauge";
 
 const NATIONALITIES = [
-  "Tunisia",
-  "Morocco",
+  "Afghanistan",
+  "Albania",
   "Algeria",
-  "France",
+  "Andorra",
+  "Angola",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahrain",
+  "Bangladesh",
+  "Belarus",
   "Belgium",
+  "Benin",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cambodia",
+  "Cameroon",
   "Canada",
-  "Senegal",
+  "Cape Verde",
+  "Central African Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo",
+  "Costa Rica",
   "Côte d'Ivoire",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czech Republic",
+  "Democratic Republic of the Congo",
+  "Denmark",
+  "Djibouti",
+  "Dominican Republic",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Eswatini",
+  "Ethiopia",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Guatemala",
+  "Guinea",
+  "Guinea-Bissau",
+  "Haiti",
+  "Honduras",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Mali",
+  "Malta",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Moldova",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar",
+  "Namibia",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palestine",
+  "Panama",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Togo",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Uruguay",
+  "Uzbekistan",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
 ];
 
 const DESTINATIONS = [
+  "Austria (Schengen)",
+  "Belgium (Schengen)",
+  "Croatia (Schengen)",
+  "Czech Republic (Schengen)",
+  "Denmark (Schengen)",
+  "Estonia (Schengen)",
+  "Finland (Schengen)",
   "France (Schengen)",
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "Australia",
   "Germany (Schengen)",
+  "Greece (Schengen)",
+  "Hungary (Schengen)",
+  "Iceland (Schengen)",
   "Italy (Schengen)",
+  "Latvia (Schengen)",
+  "Lithuania (Schengen)",
+  "Luxembourg (Schengen)",
+  "Malta (Schengen)",
+  "Netherlands (Schengen)",
+  "Norway (Schengen)",
+  "Poland (Schengen)",
+  "Portugal (Schengen)",
+  "Slovakia (Schengen)",
+  "Slovenia (Schengen)",
+  "Spain (Schengen)",
+  "Sweden (Schengen)",
+  "Switzerland (Schengen)",
+  "United States",
 ];
 
 const VISA_TYPES = ["Tourism", "Business", "Study", "Family", "Transit"];
+
 const EMPLOYMENT_OPTIONS = [
   "Permanent",
   "Temporary",
@@ -92,8 +268,8 @@ function StepIndicator({ step }) {
           >
             <div
               style={{
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 borderRadius: "50%",
                 background:
                   step >= s.num ? "var(--blue-600)" : "var(--gray-200)",
@@ -106,14 +282,17 @@ function StepIndicator({ step }) {
                     ? "3px solid var(--blue-200)"
                     : "3px solid transparent",
                 fontWeight: 700,
+                boxShadow:
+                  step >= s.num ? "0 4px 12px rgba(37,99,235,0.15)" : "none",
               }}
             >
               {step > s.num ? <FiCheckCircle size={16} /> : s.num}
             </div>
+
             <span
               style={{
                 fontSize: 12,
-                fontWeight: 500,
+                fontWeight: 600,
                 color: step >= s.num ? "var(--blue-700)" : "var(--gray-400)",
               }}
             >
@@ -124,9 +303,9 @@ function StepIndicator({ step }) {
           {i < steps.length - 1 && (
             <div
               style={{
-                width: 60,
+                width: 70,
                 height: 2,
-                margin: "0 4px",
+                margin: "0 6px",
                 marginTop: -18,
                 background:
                   step > s.num ? "var(--blue-400)" : "var(--gray-200)",
@@ -145,6 +324,7 @@ export default function VisaScoring() {
   const [result, setResult] = useState(null);
 
   const setField = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+
   const toggleDoc = (doc) =>
     setField(
       "docs",
@@ -181,7 +361,7 @@ export default function VisaScoring() {
           <span className="badge">Application Review</span>
           <h1 className="section-title">Review your application profile</h1>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Fill in the required details and receive a general review with
+            Complete the review form and get a general score with practical
             recommendations to strengthen your application.
           </p>
         </div>
@@ -190,13 +370,14 @@ export default function VisaScoring() {
 
         <div
           style={{
-            maxWidth: 580,
+            maxWidth: step === 4 ? 980 : 620,
             margin: "0 auto",
             background: "white",
             borderRadius: "var(--radius-lg)",
-            padding: "40px 40px",
+            padding: "40px",
             boxShadow: "var(--shadow-lg)",
             border: "1px solid var(--gray-200)",
+            transition: "all 0.25s ease",
           }}
         >
           {step === 1 && (
@@ -439,74 +620,183 @@ export default function VisaScoring() {
           )}
 
           {step === 4 && result && (
-            <div>
-              <h3
-                style={{
-                  marginBottom: 18,
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "1.2rem",
-                  color: "var(--blue-700)",
-                }}
-              >
-                Application review result
-              </h3>
-
+            <div
+              className="review-result-layout"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "320px 1fr",
+                gap: 28,
+                alignItems: "start",
+              }}
+            >
+              {/* Left side */}
               <div
                 style={{
-                  background: "var(--blue-50)",
-                  border: "1px solid var(--blue-200)",
-                  borderRadius: 12,
-                  padding: "18px 20px",
-                  marginBottom: 20,
+                  background: "var(--gray-50)",
+                  border: "1px solid var(--gray-200)",
+                  borderRadius: "var(--radius-lg)",
+                  padding: "28px 20px",
+                  textAlign: "center",
                 }}
               >
-                <p style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>
-                  Overall result: {result.niveau}
-                </p>
-                <p style={{ fontSize: 14, color: "var(--gray-700)" }}>
-                  {result.conseil}
-                </p>
+                <h3
+                  style={{
+                    marginBottom: 18,
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "1.1rem",
+                    color: "var(--blue-700)",
+                  }}
+                >
+                  Review result
+                </h3>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: 22,
+                  }}
+                >
+                  <ScoreGauge
+                    score={result.score}
+                    couleur={result.couleur}
+                    niveau={result.niveau}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    background: "white",
+                    border: "1px solid var(--gray-200)",
+                    borderRadius: 12,
+                    padding: "16px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: "var(--gray-500)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    Overall result
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 800,
+                      color: result.couleur,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {result.niveau}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: "var(--gray-700)",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {result.conseil}
+                  </p>
+                </div>
               </div>
 
-              {!!result.pointsForts?.length && (
-                <div style={{ marginBottom: 18 }}>
-                  <h4 style={{ marginBottom: 8 }}>Strengths</h4>
-                  <ul style={{ paddingLeft: 18 }}>
-                    {result.pointsForts.map((item, i) => (
-                      <li
-                        key={i}
-                        style={{ marginBottom: 6, color: "var(--gray-700)" }}
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {/* Right side */}
+              <div>
+                {!!result.pointsForts?.length && (
+                  <div
+                    style={{
+                      marginBottom: 20,
+                      background: "#F0FDF4",
+                      border: "1px solid #BBF7D0",
+                      borderRadius: 14,
+                      padding: "20px",
+                    }}
+                  >
+                    <h4
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                        color: "#15803D",
+                      }}
+                    >
+                      <FiTrendingUp /> Strengths
+                    </h4>
+                    <ul style={{ paddingLeft: 18, margin: 0 }}>
+                      {result.pointsForts.map((item, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            marginBottom: 8,
+                            color: "var(--gray-700)",
+                            lineHeight: 1.7,
+                          }}
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              {!!result.recommandations?.length && (
-                <div style={{ marginBottom: 24 }}>
-                  <h4 style={{ marginBottom: 8 }}>Recommendations</h4>
-                  <ul style={{ paddingLeft: 18 }}>
-                    {result.recommandations.map((item, i) => (
-                      <li
-                        key={i}
-                        style={{ marginBottom: 6, color: "var(--gray-700)" }}
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                {!!result.recommandations?.length && (
+                  <div
+                    style={{
+                      marginBottom: 24,
+                      background: "#FFF7ED",
+                      border: "1px solid #FED7AA",
+                      borderRadius: 14,
+                      padding: "20px",
+                    }}
+                  >
+                    <h4
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginBottom: 12,
+                        color: "#C2410C",
+                      }}
+                    >
+                      <FiAlertCircle /> Recommendations
+                    </h4>
+                    <ul style={{ paddingLeft: 18, margin: 0 }}>
+                      {result.recommandations.map((item, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            marginBottom: 8,
+                            color: "var(--gray-700)",
+                            lineHeight: 1.7,
+                          }}
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              <button
-                className="btn-primary"
-                onClick={reset}
-                style={{ width: "100%", justifyContent: "center" }}
-              >
-                <FiRefreshCw size={15} /> Start again
-              </button>
+                <button
+                  className="btn-primary"
+                  onClick={reset}
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  <FiRefreshCw size={15} /> Start again
+                </button>
+              </div>
+
+              <style>{`
+                @media (max-width: 860px) {
+                  .review-result-layout {
+                    grid-template-columns: 1fr !important;
+                  }
+                }
+              `}</style>
             </div>
           )}
         </div>

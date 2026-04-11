@@ -1,7 +1,4 @@
-﻿// src/components/ScoreGauge.jsx
-// Composant réutilisable : jauge circulaire pour afficher un score
-
-export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
+﻿export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
   const strokeWidth = size * 0.075;
   const radius = size / 2 - strokeWidth;
   const circumference = 2 * Math.PI * radius;
@@ -18,7 +15,6 @@ export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
     >
       <div style={{ position: "relative", width: size, height: size }}>
         <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-          {/* Piste de fond */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -27,7 +23,6 @@ export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
             stroke="var(--gray-200)"
             strokeWidth={strokeWidth}
           />
-          {/* Arc du score */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -42,7 +37,6 @@ export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
           />
         </svg>
 
-        {/* Texte centré */}
         <div
           style={{
             position: "absolute",

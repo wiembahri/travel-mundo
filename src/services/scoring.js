@@ -1,131 +1,135 @@
-﻿// Calcul du score Visa Readiness côté frontend
-// Quand votre backend IA sera prêt, remplacez par un appel API
-
-export function calculerScoreVisa(form) {
+﻿export function calculerScoreVisa(form) {
   let score = 0;
   const recommandations = [];
   const pointsForts = [];
 
-  // ── 1. Revenu mensuel (25 pts) ─────────────────
+  // 1. Monthly income (25 pts)
   const rev = parseInt(form.revenu) || 0;
   if (rev >= 3000) {
     score += 25;
     pointsForts.push(
-      "Revenu mensuel solide — rassure les ambassades sur votre capacité financière.",
+      "Strong monthly income — this helps demonstrate financial capacity for the application.",
     );
   } else if (rev >= 1500) {
     score += 15;
     recommandations.push(
-      "Revenu en dessous du seuil recommandé. Joignez 6 mois de relevés bancaires et une lettre de votre employeur.",
+      "Income is below the recommended level. Consider adding 6 months of bank statements and proof of employment.",
     );
   } else {
     score += 5;
     recommandations.push(
-      "Revenu insuffisant pour la destination choisie. Envisagez un co-demandeur ou un garant financier.",
+      "Income may be insufficient for the selected destination. Consider adding stronger financial support documents.",
     );
   }
 
-  // ── 2. Historique de voyages (20 pts) ──────────
+  // 2. Travel history (20 pts)
   const voyages = parseInt(form.voyages) || 0;
   if (voyages >= 5) {
     score += 20;
     pointsForts.push(
-      "Excellent historique de voyages — preuve de vos habitudes de retour dans votre pays.",
+      "Strong travel history — previous trips can help support the credibility of your application.",
     );
   } else if (voyages >= 2) {
     score += 12;
     recommandations.push(
-      "Historique de voyages limité. Mentionnez tous vos voyages précédents, même les pays sans visa.",
+      "Limited travel history. Include previous trips and supporting travel records where possible.",
     );
   } else {
     score += 4;
     recommandations.push(
-      "Aucun historique de voyages détecté. Compensez avec des preuves solides de liens dans votre pays (emploi, famille, propriété).",
+      "No travel history detected. You may need stronger supporting evidence such as employment, family, or property ties.",
     );
   }
 
-  // ── 3. Situation professionnelle (20 pts) ──────
-  if (form.emploi === "CDI") {
+  // 3. Employment situation (20 pts)
+  if (form.emploi === "Permanent") {
     score += 20;
     pointsForts.push(
-      "Contrat CDI — situation professionnelle stable, très appréciée des ambassades.",
+      "Permanent employment — this shows a stable professional situation.",
     );
-  } else if (form.emploi === "Indépendant") {
+  } else if (form.emploi === "Self-employed") {
     score += 14;
     recommandations.push(
-      "En tant qu'indépendant, joignez 3 ans de bilans comptables et votre extrait de registre de commerce.",
+      "As a self-employed applicant, consider adding financial records and business registration documents.",
     );
-  } else if (form.emploi === "CDD") {
+  } else if (form.emploi === "Temporary") {
     score += 10;
     recommandations.push(
-      "CDD : précisez la durée du contrat et joignez une lettre de votre employeur confirmant votre retour.",
+      "Temporary employment may require additional proof of professional stability.",
     );
-  } else if (form.emploi === "Étudiant") {
+  } else if (form.emploi === "Student") {
     score += 8;
     recommandations.push(
-      "Étudiant : joignez une attestation d'inscription, une lettre de la famille sponsor et relevés de compte.",
+      "As a student, you may need enrollment documents and financial support evidence.",
+    );
+  } else if (form.emploi === "Retired") {
+    score += 8;
+    recommandations.push(
+      "As a retired applicant, pension proof and financial documents may help support your application.",
     );
   } else {
     score += 3;
     recommandations.push(
-      "Situation sans emploi : les liens familiaux solides et preuves de propriété sont essentiels pour votre dossier.",
+      "Your current profile may require stronger supporting documents to improve the application.",
     );
   }
 
-  // ── 4. Documents disponibles (20 pts) ──────────
+  // 4. Available documents (20 pts)
   const nbDocs = (form.docs || []).length;
   if (nbDocs >= 5) {
     score += 20;
     pointsForts.push(
-      "Dossier documentaire complet — tous les justificatifs requis sont présents.",
+      "Strong document preparation — your application appears well supported.",
     );
   } else if (nbDocs >= 3) {
     score += 12;
     recommandations.push(
-      `Il vous manque ${8 - nbDocs} document(s) recommandés. Complétez avant de soumettre votre demande.`,
+      `You may still be missing ${8 - nbDocs} recommended document(s). Completing your file may strengthen your application.`,
     );
   } else {
     score += 4;
     recommandations.push(
-      "Dossier incomplet. Le manque de documents est la première cause de rejet. Complétez impérativement.",
+      "Your file appears incomplete. Missing documents can significantly weaken an application.",
     );
   }
 
-  // ── 5. Nationalité / profil de risque (15 pts) ─
-  const nationaliteScore = {
+  // 5. Nationality / profile factor (15 pts)
+  const nationalityScore = {
     France: 15,
-    Belgique: 15,
+    Belgium: 15,
     Canada: 14,
-    Maroc: 11,
-    Tunisie: 10,
-    Algérie: 9,
-    Sénégal: 7,
+    Morocco: 11,
+    Tunisia: 10,
+    Algeria: 9,
+    Senegal: 7,
     "Côte d'Ivoire": 7,
   };
-  score += nationaliteScore[form.nationalite] || 8;
 
-  // ── Résultat final ──────────────────────────────
+  score += nationalityScore[form.nationalite] || 8;
+
   const scoreTotal = Math.min(Math.round(score), 100);
 
   let niveau, couleur, conseil;
   if (scoreTotal >= 75) {
     niveau = "Excellent";
     couleur = "#16A34A";
-    conseil = "Votre dossier est solide. Soumettez votre demande sans tarder.";
+    conseil =
+      "Your application profile looks strong. You can move forward with confidence.";
   } else if (scoreTotal >= 55) {
-    niveau = "Bon";
+    niveau = "Good";
     couleur = "#2563EB";
-    conseil = "Bon dossier avec quelques points à renforcer avant soumission.";
+    conseil =
+      "Your profile is solid, but a few improvements could strengthen the application further.";
   } else if (scoreTotal >= 35) {
-    niveau = "Moyen";
+    niveau = "Average";
     couleur = "#D97706";
     conseil =
-      "Dossier fragile. Renforcez les points faibles avant de soumettre.";
+      "Your application may need stronger supporting documents before submission.";
   } else {
-    niveau = "Faible";
+    niveau = "Weak";
     couleur = "#DC2626";
     conseil =
-      "Risque élevé de rejet. Consultez un agent Travel Mundo avant de soumettre.";
+      "Your profile may face a high risk of rejection. Consider improving your supporting documents before applying.";
   }
 
   return {
