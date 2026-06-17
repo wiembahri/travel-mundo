@@ -1,4 +1,4 @@
-﻿import api from "./api";
+import api from "./api";
 
 // Connexion via API backend (à activer quand le backend est prêt)
 export async function loginAPI(email, password) {

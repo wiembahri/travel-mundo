@@ -48,7 +48,6 @@ src/
     ├── About.jsx        → /a-propos
     ├── Services.jsx     → /services
     ├── Contact.jsx      → /contact
-    ├── VisaMap.jsx      → /visa-map
     ├── VisaScoring.jsx  → /visa-scoring
     ├── TrackRequest.jsx → /suivi
     └── Dashboard.jsx    → /dashboard (protégé)

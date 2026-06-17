@@ -1,4 +1,4 @@
-﻿import axios from "axios";
+import axios from "axios";
 
 // L'URL de votre backend — mettez la vraie URL dans .env
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";

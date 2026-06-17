@@ -1,164 +1,246 @@
-﻿import { FiTarget, FiEye, FiAward, FiUsers } from "react-icons/fi";
+import {
+  FiTarget,
+  FiEye,
+  FiAward,
+  FiUsers,
+  FiCheckCircle,
+  FiShield,
+} from "react-icons/fi";
+import PageHero from "../components/PageHero";
+import { useLanguage } from "../context/LanguageContext";
 
 const VALUES = [
   {
     icon: <FiTarget size={22} />,
     title: "Our mission",
-    desc: "To simplify visa, passport, ETA, and ESTA application processes through clear guidance, structured support, and easier access to the right application steps.",
+    desc: "To simplify U.S. Passport, U.S. Visa, ESTA, and UK ETA orientation through clear guidance, structured support, and easier access to the right service paths.",
     color: "var(--blue-600)",
     bg: "var(--blue-50)",
   },
   {
     icon: <FiEye size={22} />,
     title: "Our vision",
-    desc: "To provide a reliable and user-friendly application support experience for travelers who need clear guidance throughout their administrative journey.",
+    desc: "To provide a reliable and user-friendly travel preparation experience for travelers who need clear guidance throughout their administrative journey.",
     color: "var(--blue-700)",
     bg: "var(--blue-50)",
   },
   {
     icon: <FiAward size={22} />,
     title: "Our expertise",
-    desc: "We focus on helping clients prepare their applications correctly, review key information, and reduce avoidable mistakes before official submission.",
+    desc: "We focus on helping clients prepare their files correctly, review key information, and reduce avoidable mistakes before the final portal step.",
     color: "var(--blue-600)",
     bg: "var(--blue-50)",
   },
   {
     icon: <FiUsers size={22} />,
     title: "Our support",
-    desc: "Our service is built around guidance, clarity, and ongoing assistance, helping applicants understand each step of the process with confidence.",
+    desc: "Our service is built around guidance, clarity, and ongoing assistance, helping travelers understand each preparation step with confidence.",
     color: "var(--blue-700)",
     bg: "var(--blue-50)",
   },
 ];
 
+const HIGHLIGHTS = [
+  "Clear preparation guidance",
+  "Structured preparation guidance",
+  "Support before portal handoff",
+  "More confidence at every step",
+];
+
 export default function About() {
+  const { t } = useLanguage();
+
   return (
-    <div style={{ background: "var(--gray-50)", minHeight: "80vh" }}>
-      {/* Hero */}
-      <section
-        style={{
-          background:
-            "linear-gradient(135deg, var(--blue-900), var(--blue-700))",
-          padding: "80px 0",
-          textAlign: "center",
-          color: "white",
-        }}
+    <div style={{ background: "var(--gray-50)", minHeight: "100vh" }}>
+      <PageHero
+        eyebrow={t("about.eyebrow")}
+        icon={<FiShield size={14} />}
+        title={
+          <>
+            {t("about.title")} {t("about.titleAccent")}
+          </>
+        }
+        description={
+          <>
+            <p>{t("about.subtitle")}</p>
+            <div className="tm-trust-row">
+              {HIGHLIGHTS.map((item) => (
+                <span key={item}>
+                  <FiCheckCircle size={14} />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </>
+        }
       >
-        <div className="container">
-          <span
-            className="badge"
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              color: "white",
-              border: "1px solid rgba(255,255,255,0.2)",
-            }}
-          >
-            About Travel Mundo
-          </span>
-
-          <h1
-            style={{
-              color: "white",
-              fontSize: "clamp(2rem, 4vw, 2.8rem)",
-              marginBottom: 16,
-              marginTop: 8,
-            }}
-          >
-            Trusted support for visa
-            <br />
-            and passport applications
-          </h1>
-
-          <p
-            style={{
-              color: "var(--blue-200)",
-              fontSize: "1.1rem",
-              maxWidth: 700,
-              margin: "0 auto",
-              lineHeight: 1.7,
-            }}
-          >
-            Travel Mundo is a private assistance service that helps clients with
-            visa, passport, ETA, and ESTA application processes through guided
-            steps, information review, and structured support.
-          </p>
+        <div className="page-hero-list-card">
+          <span className="page-hero-list-card__label">Why clients choose us</span>
+          <strong className="page-hero-list-card__title">
+            Clear, guided, and reassuring support
+          </strong>
+          {[
+            "Understand each preparation step more clearly",
+            "Reduce confusion before the final portal step",
+            "Prepare information and support items with more confidence",
+            "Receive structured support throughout the process",
+          ].map((item, index) => (
+            <div className="page-hero-list-card__item" key={item}>
+              <span>{index + 1}</span>
+              <span>{item}</span>
+            </div>
+          ))}
         </div>
-      </section>
+      </PageHero>
 
-      {/* Intro */}
-      <section style={{ padding: "70px 0 30px" }}>
-        <div className="container" style={{ maxWidth: 950 }}>
+      {/* INTRO */}
+      <section style={{ padding: "78px 0 34px" }}>
+        <div className="container" style={{ maxWidth: 1080 }}>
           <div
+            className="about-intro-grid"
             style={{
-              background: "white",
-              border: "1px solid var(--gray-200)",
-              borderRadius: "var(--radius-lg)",
-              padding: "32px",
-              boxShadow: "var(--shadow-sm)",
+              display: "grid",
+              gridTemplateColumns: "1.1fr 0.9fr",
+              gap: 28,
+              alignItems: "stretch",
             }}
           >
-            <h2
+            <div
               style={{
-                fontSize: "1.4rem",
-                marginBottom: 14,
-                fontFamily: "var(--font-heading)",
+                background: "white",
+                border: "1px solid var(--gray-200)",
+                borderRadius: "var(--radius-lg)",
+                padding: "34px",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
-              What we do
-            </h2>
-            <p
+              <h2
+                style={{
+                  fontSize: "1.5rem",
+                  marginBottom: 16,
+                  fontFamily: "var(--font-heading)",
+                }}
+              >
+                {t("about.whatWeDo")}
+              </h2>
+
+              <p
+                style={{
+                  fontSize: 15,
+                  color: "var(--gray-700)",
+                  lineHeight: 1.85,
+                  marginBottom: 16,
+                }}
+              >
+                {t("about.whatWeDoText")}
+              </p>
+
+              <p
+                style={{
+                  fontSize: 15,
+                  color: "var(--gray-700)",
+                  lineHeight: 1.85,
+                  marginBottom: 16,
+                }}
+              >
+                Our role is to help travelers prepare the required information,
+                organize the necessary support items, review key details, and
+                understand the next steps before continuing through the
+                dedicated portal.
+              </p>
+
+              <p
+                style={{
+                  fontSize: 15,
+                  color: "var(--gray-700)",
+                  lineHeight: 1.85,
+                }}
+              >
+                We aim to provide a smoother and more reassuring preparation
+                experience for travelers by reducing confusion, improving
+                clarity, and offering practical support throughout the service
+                path.
+              </p>
+            </div>
+
+            <div
               style={{
-                fontSize: 15,
-                color: "var(--gray-700)",
-                lineHeight: 1.8,
-                marginBottom: 16,
+                background:
+                  "linear-gradient(180deg, rgba(57,103,159,0.08), rgba(57,103,159,0.03))",
+                border: "1px solid rgba(57,103,159,0.12)",
+                borderRadius: "var(--radius-lg)",
+                padding: "30px",
+                boxShadow: "var(--shadow-sm)",
               }}
             >
-              Travel Mundo supports clients with Schengen Visa, U.S. Visa,
-              Passport, and ETA / ESTA applications by making the process easier
-              to understand and follow.
-            </p>
-            <p
-              style={{
-                fontSize: 15,
-                color: "var(--gray-700)",
-                lineHeight: 1.8,
-                marginBottom: 16,
-              }}
-            >
-              Our role is to help applicants complete the required information,
-              prepare the necessary documents, review key details, and
-              understand the next steps before official submission through the
-              relevant offices or platforms.
-            </p>
-            <p
-              style={{
-                fontSize: 15,
-                color: "var(--gray-700)",
-                lineHeight: 1.8,
-              }}
-            >
-              We aim to provide a smoother and more reassuring experience for
-              applicants by reducing confusion, improving clarity, and offering
-              practical support throughout the process.
-            </p>
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: "var(--blue-700)",
+                  marginBottom: 10,
+                }}
+              >
+                {t("about.approach")}
+              </div>
+
+              <h3
+                style={{
+                  fontSize: "1.3rem",
+                  marginBottom: 18,
+                  fontFamily: "var(--font-heading)",
+                  color: "var(--gray-900)",
+                }}
+              >
+                {t("about.approachTitle")}
+              </h3>
+
+              <div style={{ display: "grid", gap: 14 }}>
+                {[
+                  "Easy-to-follow guidance for different service paths",
+                  "Preparation support before portal handoff",
+                  "Clearer understanding of required information",
+                  "A smoother client experience from start to finish",
+                ].map((point) => (
+                  <div
+                    key={point}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 10,
+                      color: "var(--gray-700)",
+                      fontSize: 14,
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    <FiCheckCircle
+                      size={16}
+                      color="var(--blue-600)"
+                      style={{ marginTop: 3, flexShrink: 0 }}
+                    />
+                    {point}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Values */}
-      <section style={{ padding: "50px 0 80px" }}>
+      {/* VALUES */}
+      <section style={{ padding: "44px 0 86px" }}>
         <div className="container">
           <div className="section-header">
-            <span className="badge">Why Travel Mundo</span>
-            <h2 className="section-title">What defines our approach</h2>
+            <span className="badge">{t("about.why")}</span>
+            <h2 className="section-title">{t("about.whatDefines")}</h2>
             <p className="section-subtitle" style={{ margin: "0 auto" }}>
               Our service is built around clarity, preparation, and support at
-              every stage of the application journey.
+              every stage of the preparation journey.
             </p>
           </div>
 
           <div
+            className="about-values-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
@@ -166,12 +248,19 @@ export default function About() {
             }}
           >
             {VALUES.map((item, i) => (
-              <div key={i} className="card">
+              <div
+                key={i}
+                className="card"
+                style={{
+                  height: "100%",
+                  borderRadius: "22px",
+                }}
+              >
                 <div
                   style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 12,
+                    width: 52,
+                    height: 52,
+                    borderRadius: 14,
                     background: item.bg,
                     color: item.color,
                     display: "flex",
@@ -185,7 +274,7 @@ export default function About() {
 
                 <h3
                   style={{
-                    fontSize: "1rem",
+                    fontSize: "1.02rem",
                     marginBottom: 10,
                     fontFamily: "var(--font-heading)",
                   }}
@@ -197,7 +286,7 @@ export default function About() {
                   style={{
                     fontSize: 14,
                     color: "var(--gray-600)",
-                    lineHeight: 1.65,
+                    lineHeight: 1.7,
                   }}
                 >
                   {item.desc}
@@ -208,27 +297,50 @@ export default function About() {
         </div>
       </section>
 
-      {/* Disclaimer */}
-      <section style={{ padding: "0 0 80px" }}>
-        <div className="container" style={{ maxWidth: 950 }}>
+      {/* DISCLAIMER */}
+      <section style={{ padding: "0 0 88px" }}>
+        <div className="container" style={{ maxWidth: 980 }}>
           <div
             style={{
-              background: "var(--blue-50)",
+              background: "linear-gradient(180deg, white, var(--blue-50))",
               border: "1px solid var(--blue-200)",
-              borderRadius: "var(--radius-md)",
-              padding: "20px 24px",
-              color: "var(--blue-800)",
+              borderRadius: "var(--radius-lg)",
+              padding: "24px 26px",
+              color: "var(--blue-900)",
               fontSize: 14,
-              lineHeight: 1.75,
+              lineHeight: 1.8,
+              boxShadow: "var(--shadow-sm)",
             }}
           >
-            <strong>Important notice:</strong> Travel Mundo is a private
-            assistance service and is not affiliated with any government
-            authority. Applications are completed through the relevant official
-            offices or platforms.
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 10,
+                fontWeight: 700,
+                color: "var(--blue-800)",
+              }}
+            >
+              <FiShield size={16} />
+              {t("about.noticeTitle")}
+            </div>
+
+            <div>
+              {t("about.notice")}
+            </div>
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 980px) {
+          .about-hero-grid,
+          .about-intro-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

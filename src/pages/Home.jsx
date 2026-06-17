@@ -1,541 +1,265 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import PageHero from "../components/PageHero";
 import {
   FiArrowRight,
-  FiMapPin,
-  FiFileText,
-  FiShield,
   FiCheckCircle,
-  FiClock,
-  FiUsers,
+  FiCompass,
+  FiCreditCard,
+  FiFileText,
+  FiGlobe,
+  FiMapPin,
+  FiNavigation,
+  FiShield,
 } from "react-icons/fi";
 
-const FEATURES = [
+const SERVICES = [
   {
-    icon: <FiFileText size={22} />,
-    title: "Schengen Visa",
-    desc: "Guided support for Schengen visa applications, including document preparation and information review.",
-    to: "/services",
-    bg: "var(--blue-50)",
-    color: "var(--blue-600)",
+    icon: <FiCreditCard size={22} />,
+    label: "United States",
+    title: "U.S. Visa",
+    desc: "Structured preparation for travelers who need a visa path, supporting items, and interview readiness.",
   },
   {
     icon: <FiShield size={22} />,
-    title: "U.S. Visa",
-    desc: "Application assistance for U.S. visas based on the purpose of travel, including tourism, business, transit, and study.",
-    to: "/services",
-    bg: "var(--blue-50)",
-    color: "var(--blue-700)",
+    title: "ESTA",
+    label: "United States",
+    desc: "Guidance for short tourism, business, or transit travel before opening the dedicated U.S. portal.",
   },
   {
-    icon: <FiMapPin size={22} />,
-    title: "ETA / ESTA",
-    desc: "Support for electronic travel authorizations with guided form completion and review before submission.",
-    to: "/services",
-    bg: "var(--blue-50)",
-    color: "var(--blue-600)",
+    icon: <FiCompass size={22} />,
+    title: "UK ETA",
+    label: "United Kingdom",
+    desc: "Clear orientation for passport, purpose, and contact details before continuing through the UK ETA path.",
   },
   {
-    icon: <FiUsers size={22} />,
-    title: "Passport",
-    desc: "Assistance with passport applications, renewals, and preparation before official submission.",
-    to: "/services",
-    bg: "var(--blue-50)",
-    color: "var(--blue-700)",
+    icon: <FiFileText size={22} />,
+    title: "U.S. Passport",
+    label: "U.S. citizens",
+    desc: "Preparation support for renewal, new passport, correction, and related passport service cases.",
   },
 ];
 
-const STATS = [
+const PROCESS = [
   {
-    value: "5,000+",
-    label: "Applications handled",
-    icon: <FiFileText size={18} />,
+    title: "Choose your destination and purpose",
+    desc: "Start with the UK or U.S. travel path that matches your trip, passport profile, and travel purpose.",
   },
-  { value: "120+", label: "Countries covered", icon: <FiMapPin size={18} /> },
   {
-    value: "98%",
-    label: "Client satisfaction",
-    icon: <FiCheckCircle size={18} />,
+    title: "Review preparation readiness",
+    desc: "Check the main information, documents, and readiness items before you move to the next step.",
   },
-  { value: "24/7", label: "Support availability", icon: <FiClock size={18} /> },
+  {
+    title: "Continue on the dedicated portal",
+    desc: "Open the right external portal once your Travel Mundo orientation and preparation review are clear.",
+  },
 ];
 
-const HOW_IT_WORKS = [
+const SERVICE_BADGES = ["U.S. Visa", "ESTA", "UK ETA", "U.S. Passport"];
+
+const TOOL_LINKS = [
   {
-    num: "01",
-    title: "Choose your service",
-    desc: "Select the service that fits your needs: Schengen Visa, U.S. Visa, Passport, or ETA / ESTA.",
+    to: "/smart-diagnosis",
+    eyebrow: "Traveler information",
+    title: "Smart Diagnosis",
+    text: "Analyze traveler information, identity consistency, passport status, travel history, and local photo compatibility.",
+    cta: "Open diagnosis",
   },
   {
-    num: "02",
-    title: "Complete your application",
-    desc: "Fill in the required information through a simple and guided process.",
+    to: "/travel-flow",
+    eyebrow: "Preparation flow",
+    title: "Travel Journey",
+    text: "Visualize the preparation journey from orientation to readiness review, instructions, report generation, and dedicated portal handoff.",
+    cta: "Explore journey",
   },
   {
-    num: "03",
-    title: "Review and preparation",
-    desc: "Your information is checked to help reduce errors and prepare your application correctly.",
-  },
-  {
-    num: "04",
-    title: "Submit and track",
-    desc: "Receive the next steps for official submission and follow the progress of your request.",
+    to: "/visa-scoring",
+    eyebrow: "Readiness report",
+    title: "Readiness Review",
+    text: "Review preparation items, risk level, readiness score, recommendations, and generate a structured PDF report.",
+    cta: "Review readiness",
   },
 ];
 
 export default function Home() {
   return (
-    <div>
-      {/* HERO */}
-      <section
-        style={{
-          background:
-            "linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%)",
-          padding: "96px 0 80px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: -100,
-            right: -100,
-            width: 500,
-            height: 500,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.03)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: -80,
-            left: -80,
-            width: 350,
-            height: 350,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.04)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "30%",
-            left: "60%",
-            width: 200,
-            height: 200,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.025)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ maxWidth: 720 }}>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "var(--blue-100)",
-                padding: "6px 16px",
-                borderRadius: 20,
-                fontSize: 13,
-                fontWeight: 600,
-                fontFamily: "var(--font-heading)",
-                marginBottom: 28,
-              }}
-            >
-              <FiShield size={13} /> Private application assistance
-            </span>
-
-            <h1
-              style={{
-                fontSize: "clamp(2.2rem, 5vw, 3.6rem)",
-                fontWeight: 800,
-                color: "white",
-                lineHeight: 1.12,
-                marginBottom: 22,
-                fontFamily: "var(--font-heading)",
-              }}
-            >
-              Streamlined solutions for{" "}
-              <span
-                style={{
-                  color: "var(--blue-300)",
-                  paddingBottom: 2,
-                }}
-              >
-                visa and passport applications worldwide
-              </span>
-            </h1>
-
-            <p
-              style={{
-                fontSize: "1.15rem",
-                color: "rgba(255,255,255,0.82)",
-                maxWidth: 620,
-                marginBottom: 40,
-                lineHeight: 1.75,
-              }}
-            >
-              Travel Mundo provides structured support for Schengen visas, U.S.
-              visas, passports, and ETA / ESTA applications through guided
-              steps, document review, and clear submission assistance.
+    <main className="tm-home">
+      <PageHero
+        variant="primary"
+        eyebrow="Travel Mundo preparation hub"
+        icon={<FiShield size={14} />}
+        title="Prepare your U.S. and UK travel services with confidence"
+        description={
+          <>
+            <p>
+              Travel Mundo centralizes guidance for U.S. Visa, ESTA, UK ETA,
+              and U.S. Passport services, helping travelers choose the right
+              path, review preparation items, and continue on dedicated portals.
             </p>
 
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <Link
-                to="/services"
-                className="btn-primary"
-                style={{
-                  background: "white",
-                  color: "var(--blue-700)",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
-                  fontSize: 15,
-                }}
-              >
-                Explore services <FiArrowRight />
+            <div className="tm-hero-actions">
+              <Link to="/orientation" className="tm-btn tm-btn-primary">
+                Start Orientation <FiArrowRight />
               </Link>
-              <Link
-                to="/contact"
-                className="btn-outline"
-                style={{
-                  borderColor: "rgba(255,255,255,0.45)",
-                  color: "white",
-                }}
-              >
-                Contact us
+              <Link to="/services" className="tm-btn tm-btn-secondary">
+                View Services <FiArrowRight />
               </Link>
             </div>
 
-            <div
-              style={{
-                marginTop: 44,
-                display: "flex",
-                gap: 20,
-                flexWrap: "wrap",
-              }}
-            >
-              {[
-                "Guided application process",
-                "Information review before submission",
-                "Official submission steps included",
-              ].map((text, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    color: "rgba(255,255,255,0.75)",
-                  }}
-                >
-                  <FiCheckCircle size={14} color="var(--blue-300)" /> {text}
-                </div>
+            <div className="tm-trust-row">
+              {SERVICE_BADGES.map((item) => (
+                <span key={item}>
+                  <FiCheckCircle size={15} />
+                  {item}
+                </span>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <section
-        style={{
-          background: "white",
-          borderBottom: "1px solid var(--gray-200)",
-        }}
+          </>
+        }
       >
-        <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            }}
-          >
-            {STATS.map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "32px 24px",
-                  textAlign: "center",
-                  borderRight:
-                    i < STATS.length - 1 ? "1px solid var(--gray-200)" : "none",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginBottom: 8,
-                    color: "var(--blue-500)",
-                  }}
-                >
-                  {s.icon}
-                </div>
-                <div
-                  style={{
-                    fontSize: "2rem",
-                    fontWeight: 800,
-                    color: "var(--blue-700)",
-                    fontFamily: "var(--font-heading)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.value}
-                </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: "var(--gray-500)",
-                    marginTop: 6,
-                  }}
-                >
-                  {s.label}
-                </div>
+        <div className="tm-travel-visual" aria-hidden="true">
+          <div className="tm-orbit-ring" />
+          <div className="tm-visual-card tm-hub-card">
+            <div className="tm-passport-topline">
+              <span>Travel Mundo</span>
+              <strong>UK / US</strong>
+            </div>
+            <div className="tm-passport-mark tm-hub-mark">
+              <FiGlobe size={34} />
+            </div>
+            <strong>Travel Preparation Hub</strong>
+            <small>Guidance, readiness, instructions, portal handoff</small>
+          </div>
+
+          <div className="tm-visual-card tm-flight-card">
+            <div>
+              <span>Route</span>
+              <strong>UK</strong>
+            </div>
+            <FiNavigation size={20} />
+            <div>
+              <span>Route</span>
+              <strong>US</strong>
+            </div>
+          </div>
+
+          <div className="tm-visual-card tm-checklist-card">
+            {["Profile review", "Preparation items", "Dedicated portal"].map((item) => (
+              <div key={item}>
+                <FiCheckCircle size={15} />
+                <span>{item}</span>
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* FEATURES */}
-      <section style={{ padding: "88px 0", background: "var(--gray-50)" }}>
+          <div className="tm-map-pin">
+            <FiMapPin size={22} />
+          </div>
+        </div>
+      </PageHero>
+
+      <section className="tm-section tm-section-soft">
         <div className="container">
-          <div className="section-header">
-            <span className="badge">What we offer</span>
-            <h2 className="section-title">Application support services</h2>
-            <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              We help simplify application processes by guiding users through
-              forms, reviewing information, and preparing them for official
-              submission.
+          <div className="tm-section-head">
+            <span className="tm-eyebrow">Services overview</span>
+            <h2>Four preparation paths for UK and U.S. travel.</h2>
+            <p>
+              Each service keeps the focus on orientation, preparation items,
+              readiness review, and the next dedicated portal step.
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: 24,
-            }}
-          >
-            {FEATURES.map((f, i) => (
-              <Link key={i} to={f.to} style={{ display: "block" }}>
-                <div className="card" style={{ height: "100%" }}>
-                  <div
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 12,
-                      background: f.bg,
-                      color: f.color,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 18,
-                    }}
-                  >
-                    {f.icon}
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: "1.05rem",
-                      marginBottom: 10,
-                      fontFamily: "var(--font-heading)",
-                    }}
-                  >
-                    {f.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: "var(--gray-600)",
-                      lineHeight: 1.65,
-                      marginBottom: 16,
-                    }}
-                  >
-                    {f.desc}
-                  </p>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      color: f.color,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      fontFamily: "var(--font-heading)",
-                    }}
-                  >
-                    Learn more <FiArrowRight size={13} />
-                  </span>
-                </div>
+          <div className="tm-service-showcase">
+            {SERVICES.map((service) => (
+              <Link to="/services" className="tm-premium-card" key={service.title}>
+                <div className="tm-card-icon">{service.icon}</div>
+                <span className="tm-card-label">{service.label}</span>
+                <h3>{service.title}</h3>
+                <p>{service.desc}</p>
+                <span>
+                  View guidance <FiArrowRight size={14} />
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section style={{ padding: "88px 0", background: "white" }}>
+      <section className="tm-section tm-confidence-section tm-smart-tools-section">
         <div className="container">
-          <div className="section-header">
-            <span className="badge">How it works</span>
-            <h2 className="section-title">Your application in 4 steps</h2>
-            <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              From choosing the right service to preparing for submission, the
-              process is designed to be clear and easy to follow.
+          <div className="tm-section-head">
+            <span className="tm-eyebrow">Smart preparation tools</span>
+            <h2>Smart preparation tools</h2>
+            <p>
+              Use advanced preparation tools to review traveler information,
+              understand the journey, and generate a readiness report before
+              continuing on the dedicated portal.
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 32,
-              position: "relative",
-            }}
-          >
-            {HOW_IT_WORKS.map((step, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: "50%",
-                    background:
-                      "linear-gradient(135deg, var(--blue-700), var(--blue-500))",
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 20px",
-                    fontFamily: "var(--font-heading)",
-                    fontWeight: 800,
-                    fontSize: 18,
-                    boxShadow: "var(--shadow-md)",
-                  }}
-                >
-                  {step.num}
+          <div className="tm-tools-grid">
+            {TOOL_LINKS.map((tool, index) => (
+              <Link to={tool.to} className="tm-tool-card" key={tool.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <small className="tm-tool-card__eyebrow">{tool.eyebrow}</small>
+                <h3>{tool.title}</h3>
+                <p>{tool.text}</p>
+                <strong className="tm-tool-card__cta">
+                  {tool.cta} <FiArrowRight size={14} />
+                </strong>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="tm-section">
+        <div className="container tm-split-section">
+          <div className="tm-section-head tm-section-head-left">
+            <span className="tm-eyebrow">How Travel Mundo helps</span>
+            <h2>A clear preparation sequence before portal handoff.</h2>
+            <p>
+              Travel Mundo keeps the traveler journey organized without
+              presenting itself as a government service platform.
+            </p>
+            <Link to="/orientation" className="tm-btn tm-btn-primary">
+              Start Orientation <FiArrowRight />
+            </Link>
+          </div>
+
+          <div className="tm-process-list">
+            {PROCESS.map((step, index) => (
+              <div className="tm-process-item" key={step.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.desc}</p>
                 </div>
-                <h3
-                  style={{
-                    fontSize: "1rem",
-                    marginBottom: 10,
-                    fontFamily: "var(--font-heading)",
-                  }}
-                >
-                  {step.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: "var(--gray-600)",
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {step.desc}
-                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section
-        style={{
-          padding: "88px 0",
-          background:
-            "linear-gradient(135deg, var(--blue-900), var(--blue-700))",
-          textAlign: "center",
-        }}
-      >
+      <section className="tm-final-cta">
         <div className="container">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: 20,
-            }}
-          >
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
-                background: "rgba(255,255,255,0.1)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FiUsers size={24} color="white" />
+          <div className="tm-final-cta-inner">
+            <span className="tm-eyebrow">Ready to begin</span>
+            <h2>Start with orientation, then continue on the right portal.</h2>
+            <p>
+              Choose a service path, review readiness, and move forward with a
+              clearer understanding of the next preparation step.
+            </p>
+            <div className="tm-hero-actions">
+              <Link to="/services" className="tm-btn tm-btn-light">
+                View Services <FiArrowRight />
+              </Link>
+              <Link to="/contact" className="tm-btn tm-btn-ghost-light">
+                Contact Us <FiArrowRight />
+              </Link>
             </div>
-          </div>
-
-          <h2
-            style={{
-              color: "white",
-              fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
-              marginBottom: 16,
-              fontFamily: "var(--font-heading)",
-            }}
-          >
-            Ready to get started?
-          </h2>
-
-          <p
-            style={{
-              color: "var(--blue-200)",
-              fontSize: "1.05rem",
-              maxWidth: 560,
-              margin: "0 auto 36px",
-            }}
-          >
-            Explore our services and get guided support for your visa, passport,
-            ETA, or ESTA application.
-          </p>
-
-          <div
-            style={{
-              display: "flex",
-              gap: 16,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Link
-              to="/services"
-              className="btn-primary"
-              style={{
-                background: "white",
-                color: "var(--blue-700)",
-                fontSize: 16,
-                padding: "14px 32px",
-              }}
-            >
-              View services <FiArrowRight />
-            </Link>
-            <Link
-              to="/contact"
-              className="btn-outline"
-              style={{
-                borderColor: "rgba(255,255,255,0.4)",
-                color: "white",
-                fontSize: 16,
-              }}
-            >
-              Contact us
-            </Link>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

@@ -1,8 +1,17 @@
-﻿export default function ScoreGauge({ score, couleur, niveau, size = 160 }) {
+export default function ScoreGauge({
+  score,
+  couleur,
+  niveau,
+  size = 160,
+  label = "readiness",
+}) {
+  const safeScore = Number.isFinite(Number(score))
+    ? Math.max(0, Math.min(100, Math.round(Number(score))))
+    : 0;
   const strokeWidth = size * 0.075;
   const radius = size / 2 - strokeWidth;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
+  const offset = circumference - (safeScore / 100) * circumference;
 
   return (
     <div
@@ -56,16 +65,19 @@
               lineHeight: 1,
             }}
           >
-            {score}
+            {safeScore}%
           </span>
           <span
             style={{
               fontSize: size * 0.08,
               color: "var(--gray-400)",
               marginTop: 2,
+              fontWeight: 800,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
             }}
           >
-            / 100
+            {label}
           </span>
         </div>
       </div>

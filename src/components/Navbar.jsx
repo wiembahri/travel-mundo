@@ -1,244 +1,334 @@
-﻿import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FiMenu, FiX, FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import {
+  FiArrowRight,
+  FiChevronDown,
+  FiChevronRight,
+  FiGlobe,
+  FiLogOut,
+  FiMenu,
+  FiShield,
+  FiMoon,
+  FiSun,
+  FiX,
+} from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
+import { useTheme } from "../context/ThemeContext";
 
 const NAV_LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/a-propos", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/visa-map", label: "Visa Map" },
-  { to: "/visa-scoring", label: "Application Review" },
-  { to: "/suivi", label: "Track Application" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", labelKey: "nav.home" },
+  { to: "/services", labelKey: "nav.services" },
+  { to: "/orientation", labelKey: "nav.orientation" },
+  { to: "/instructions", labelKey: "nav.instructions" },
+  { to: "/suivi", labelKey: "nav.track" },
+  { to: "/a-propos", labelKey: "nav.about" },
+  { to: "/contact", labelKey: "nav.contact" },
 ];
+
+const LANGUAGES = [
+  { code: "en", shortLabel: "EN", label: "English" },
+  { code: "fr", shortLabel: "FR", label: "Francais" },
+  { code: "es", shortLabel: "ES", label: "Espanol" },
+];
+
+function LanguageDropdown({
+  language,
+  setLanguage,
+  mobile = false,
+  closeSignal = 0,
+  onSelect,
+}) {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const current =
+    LANGUAGES.find((item) => item.code === language) || LANGUAGES[0];
+
+  const chooseLanguage = (code) => {
+    setLanguage(code);
+    setOpen(false);
+    onSelect?.();
+  };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [closeSignal]);
+
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (!dropdownRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={dropdownRef}
+      className={`tm-language-dropdown ${
+        mobile ? "tm-language-dropdown--mobile" : ""
+      }`}
+    >
+      <button
+        type="button"
+        className="tm-language-trigger"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <FiGlobe size={14} />
+        <span>{current.shortLabel}</span>
+        <FiChevronDown size={13} />
+      </button>
+
+      {open && (
+        <div className="tm-language-menu" role="menu">
+          {LANGUAGES.map((item) => (
+            <button
+              key={item.code}
+              type="button"
+              role="menuitem"
+              className={language === item.code ? "active" : ""}
+              onClick={() => chooseLanguage(item.code)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [languageCloseSignal, setLanguageCloseSignal] = useState(0);
   const { pathname } = useLocation();
   const { user, logout } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
+  const { isDark, toggleTheme } = useTheme();
 
-  const isActive = (to) => pathname === to;
+  const closeInteractiveLayers = () => {
+    setMenuOpen(false);
+    setLanguageCloseSignal((current) => current + 1);
+  };
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setLanguageCloseSignal((current) => current + 1);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1250) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const showLogout = Boolean(user);
+  const getNavLinkClassName = ({ isActive }) => (isActive ? "active" : "");
 
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-        background: "rgba(255,255,255,0.96)",
-        backdropFilter: "blur(14px)",
-        borderBottom: "1px solid var(--gray-200)",
-        boxShadow: "var(--shadow-sm)",
-      }}
-    >
-      <div
-        className="container"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: 68,
-        }}
-      >
-        {/* Logo */}
-        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              background:
-                "linear-gradient(135deg, var(--blue-700), var(--blue-500))",
-              borderRadius: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(37,99,235,0.3)",
-            }}
+    <header className={`tm-header ${scrolled ? "is-scrolled" : ""}`}>
+      <div className="container">
+        <nav className="tm-navbar" aria-label="Main navigation">
+          <Link
+            to="/"
+            className="tm-brand"
+            aria-label="Travel Mundo home"
+            onClick={closeInteractiveLayers}
           >
-            <span
-              style={{
-                color: "white",
-                fontWeight: 800,
-                fontSize: 16,
-                fontFamily: "var(--font-heading)",
-              }}
-            >
-              TM
+            <span className="tm-brand-mark">
+              <img
+                src="/travel-mundo-logo.png"
+                alt="Travel Mundo"
+                className="tm-brand-logo"
+              />
             </span>
-          </div>
-          <div>
-            <span
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontWeight: 800,
-                fontSize: 18,
-                color: "var(--blue-800)",
-              }}
-            >
-              Travel<span style={{ color: "var(--blue-500)" }}>Mundo</span>
+            <span className="tm-brand-copy">
+              <strong>
+                Travel<span>Mundo</span>
+              </strong>
+              <small>{t("nav.brandSubtitle")}</small>
             </span>
-            <div
-              style={{ fontSize: 10, color: "var(--gray-500)", marginTop: -2 }}
-            >
-              Visa, Passport, ETA / ESTA
-            </div>
+          </Link>
+
+          <div className="tm-nav-center">
+              <ul>
+                {NAV_LINKS.map((link) => (
+                  <li key={link.to}>
+                    <NavLink
+                      to={link.to}
+                      end={link.to === "/"}
+                      className={getNavLinkClassName}
+                      onClick={closeInteractiveLayers}
+                    >
+                      {link.label || t(link.labelKey)}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
           </div>
-        </Link>
 
-        {/* Desktop Links */}
-        <ul
-          style={{
-            display: "flex",
-            gap: 2,
-            listStyle: "none",
-            alignItems: "center",
-          }}
-          className="nav-links-desktop"
-        >
-          {NAV_LINKS.map((link) => (
-            <li key={link.to}>
-              <Link
-                to={link.to}
-                style={{
-                  padding: "7px 13px",
-                  borderRadius: 8,
-                  fontSize: 14,
-                  fontWeight: 500,
-                  fontFamily: "var(--font-heading)",
-                  color: isActive(link.to)
-                    ? "var(--blue-600)"
-                    : "var(--gray-600)",
-                  background: isActive(link.to)
-                    ? "var(--blue-50)"
-                    : "transparent",
-                  transition: "all 0.15s",
-                  display: "block",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive(link.to)) {
-                    e.target.style.color = "var(--blue-600)";
-                    e.target.style.background = "var(--gray-100)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive(link.to)) {
-                    e.target.style.color = "var(--gray-600)";
-                    e.target.style.background = "transparent";
-                  }
-                }}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          <div className="tm-nav-actions">
+            <button
+              type="button"
+              className="tm-theme-toggle"
+              onClick={toggleTheme}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Light mode" : "Dark mode"}
+            >
+              {isDark ? <FiSun size={15} /> : <FiMoon size={15} />}
+            </button>
 
-        {/* Right actions */}
-        <div
-          style={{ display: "flex", gap: 10, alignItems: "center" }}
-          className="nav-links-desktop"
-        >
-          {user ? (
-            <>
-              <Link
-                to="/dashboard"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontSize: 14,
-                  color: "var(--blue-700)",
-                  fontWeight: 600,
-                  fontFamily: "var(--font-heading)",
-                }}
-              >
-                <FiUser size={15} /> {user.nom}
-              </Link>
+            <LanguageDropdown
+              language={language}
+              setLanguage={setLanguage}
+              closeSignal={languageCloseSignal}
+              onSelect={() => setLanguageCloseSignal((current) => current + 1)}
+            />
+
+            {showLogout ? (
               <button
-                onClick={logout}
-                className="btn-ghost"
-                style={{ padding: "8px 16px", fontSize: 13 }}
+                className="tm-nav-logout"
+                onClick={() => {
+                  closeInteractiveLayers();
+                  logout();
+                }}
               >
-                <FiLogOut size={14} /> Log out
+                <FiLogOut size={14} />
+                {t("nav.logout")}
               </button>
-            </>
-          ) : (
-            <Link
-              to="/dashboard"
-              className="btn-primary"
-              style={{ padding: "9px 20px", fontSize: 14 }}
-            >
-              <FiLogIn size={15} /> Admin Area
-            </Link>
-          )}
-        </div>
+            ) : (
+              <Link
+                to="/orientation"
+                className="tm-nav-cta"
+                onClick={closeInteractiveLayers}
+              >
+                {t("nav.startApplication")} <FiArrowRight size={14} />
+              </Link>
+            )}
+          </div>
 
-        {/* Mobile burger */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="nav-burger"
-          style={{
-            display: "none",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: 8,
-            color: "var(--gray-700)",
-          }}
-        >
-          {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-        </button>
+          <button
+            type="button"
+            className="tm-mobile-trigger"
+            onClick={() => {
+              setMenuOpen((prev) => !prev);
+              setLanguageCloseSignal((current) => current + 1);
+            }}
+            aria-label={menuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
+        </nav>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div
-          style={{
-            background: "white",
-            borderTop: "1px solid var(--gray-100)",
-            padding: "8px 24px 20px",
-          }}
-        >
+      <button
+        type="button"
+        className={`tm-mobile-backdrop ${menuOpen ? "is-open" : ""}`}
+        aria-label="Close menu"
+        aria-hidden={!menuOpen}
+        tabIndex={menuOpen ? 0 : -1}
+        onClick={closeInteractiveLayers}
+      />
+      <div
+        className={`tm-mobile-menu ${menuOpen ? "is-open" : ""}`}
+        aria-hidden={!menuOpen}
+      >
+        <div className="tm-mobile-menu-head">
+          <div>
+            <strong>TravelMundo</strong>
+            <span>{t("nav.mobileSubtitle")}</span>
+          </div>
+          <FiShield size={18} />
+        </div>
+
+        <div className="tm-mobile-links">
           {NAV_LINKS.map((link) => (
-            <Link
+            <NavLink
               key={link.to}
               to={link.to}
-              onClick={() => setMenuOpen(false)}
-              style={{
-                display: "block",
-                padding: "11px 0",
-                borderBottom: "1px solid var(--gray-100)",
-                color: isActive(link.to)
-                  ? "var(--blue-600)"
-                  : "var(--gray-700)",
-                fontWeight: 500,
-                fontSize: 15,
-                fontFamily: "var(--font-heading)",
-              }}
+              end={link.to === "/"}
+              className={getNavLinkClassName}
+              onClick={closeInteractiveLayers}
             >
-              {link.label}
-            </Link>
+              <span>{link.label || t(link.labelKey)}</span>
+              <FiChevronRight size={16} />
+            </NavLink>
           ))}
-          <div style={{ marginTop: 16 }}>
-            <Link
-              to="/dashboard"
-              className="btn-primary"
-              onClick={() => setMenuOpen(false)}
-              style={{ width: "100%", justifyContent: "center" }}
-            >
-              <FiLogIn size={15} /> Admin Area
-            </Link>
-          </div>
         </div>
-      )}
 
-      <style>{`
-        @media (max-width: 960px) {
-          .nav-links-desktop { display: none !important; }
-          .nav-burger { display: block !important; }
-        }
-      `}</style>
-    </nav>
+        <button
+          type="button"
+          className="tm-mobile-theme-toggle"
+          onClick={toggleTheme}
+        >
+          {isDark ? <FiSun size={15} /> : <FiMoon size={15} />}
+          {isDark ? "Light mode" : "Dark mode"}
+        </button>
+
+        {showLogout ? (
+          <button
+            type="button"
+            className="tm-mobile-cta secondary"
+            onClick={() => {
+              closeInteractiveLayers();
+              logout();
+            }}
+          >
+            <FiLogOut size={15} />
+            {t("nav.logout")}
+          </button>
+        ) : (
+          <div className="tm-mobile-actions">
+            <Link
+              to="/orientation"
+              className="tm-mobile-cta"
+              onClick={closeInteractiveLayers}
+            >
+              {t("nav.startApplication")} <FiArrowRight size={15} />
+            </Link>
+            <LanguageDropdown
+              language={language}
+              setLanguage={setLanguage}
+              mobile
+              closeSignal={languageCloseSignal}
+              onSelect={() => setLanguageCloseSignal((current) => current + 1)}
+            />
+          </div>
+        )}
+      </div>
+    </header>
   );
 }

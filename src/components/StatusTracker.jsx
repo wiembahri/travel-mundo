@@ -1,4 +1,4 @@
-﻿import { FiCheckCircle, FiClock, FiLoader } from "react-icons/fi";
+import { FiCheckCircle, FiClock, FiLoader } from "react-icons/fi";
 
 export default function StatusTracker({ steps, status }) {
   const firstPendingIndex = steps.findIndex((s) => !s.done);

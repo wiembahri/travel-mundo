@@ -1,41 +1,44 @@
-﻿import { useState } from "react";
+import { useState } from "react";
+import PageHero from "../components/PageHero";
 import {
   FiMapPin,
-  FiPhone,
+  FiHeadphones,
   FiMail,
   FiClock,
   FiSend,
   FiCheckCircle,
 } from "react-icons/fi";
-
-const INFOS = [
-  {
-    icon: <FiMapPin size={20} />,
-    title: "Service",
-    value: "Visa, passport, ETA / ESTA application assistance",
-    color: "var(--blue-600)",
-  },
-  {
-    icon: <FiPhone size={20} />,
-    title: "Phone",
-    value: "+216 71 000 000",
-    color: "var(--blue-700)",
-  },
-  {
-    icon: <FiMail size={20} />,
-    title: "Email",
-    value: "contact@travelmundo.tn",
-    color: "var(--blue-600)",
-  },
-  {
-    icon: <FiClock size={20} />,
-    title: "Hours",
-    value: "Monday – Friday: 8:30 AM – 5:30 PM",
-    color: "var(--blue-700)",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
+  const infos = [
+    {
+      icon: <FiMapPin size={20} />,
+      title: t("contact.service"),
+      value: t("contact.serviceValue"),
+      color: "var(--blue-600)",
+    },
+    {
+      icon: <FiHeadphones size={20} />,
+      title: t("contact.support"),
+      value: t("contact.supportValue"),
+      color: "var(--blue-700)",
+    },
+    {
+      icon: <FiMail size={20} />,
+      title: t("contact.email"),
+      value: "contact@travelmundo.tn",
+      color: "var(--blue-600)",
+    },
+    {
+      icon: <FiClock size={20} />,
+      title: t("contact.availability"),
+      value: t("contact.availabilityValue"),
+      color: "var(--blue-700)",
+    },
+  ];
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -56,35 +59,37 @@ export default function Contact() {
 
   return (
     <div
+      className="tm-form-page"
       style={{
-        padding: "60px 0 88px",
         background: "var(--gray-50)",
         minHeight: "80vh",
       }}
     >
-      <div className="container">
-        <div className="section-header">
-          <span className="badge">Contact</span>
-          <h1 className="section-title">We’re here to help</h1>
-          <p className="section-subtitle" style={{ margin: "0 auto" }}>
-            Have a question about your visa, passport, ETA, or ESTA application?
-            Our team is here to guide you through the next steps.
-          </p>
-        </div>
+      <PageHero
+        variant="compact"
+        align="center"
+        eyebrow={t("contact.badge")}
+        icon={<FiHeadphones size={14} />}
+        title={t("contact.title")}
+        description={t("contact.subtitle")}
+      />
 
+      <section style={{ padding: "52px 0 88px" }}>
+        <div className="container">
         <div
+          className="contact-grid tm-contact-layout"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1.6fr",
             gap: 32,
             alignItems: "start",
           }}
-          className="contact-grid"
         >
           {/* Contact info */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {INFOS.map((info, i) => (
+            {infos.map((info, i) => (
               <div
+                className="tm-info-card"
                 key={i}
                 style={{
                   background: "white",
@@ -120,7 +125,7 @@ export default function Contact() {
                       color: "var(--gray-500)",
                       fontWeight: 600,
                       textTransform: "uppercase",
-                      letterSpacing: "0.05em",
+                      letterSpacing: 0,
                       marginBottom: 4,
                     }}
                   >
@@ -142,6 +147,7 @@ export default function Contact() {
 
           {/* Form */}
           <div
+            className="contact-form-card"
             style={{
               background: "white",
               border: "1px solid var(--gray-200)",
@@ -173,7 +179,7 @@ export default function Contact() {
                     fontFamily: "var(--font-heading)",
                   }}
                 >
-                  Message sent successfully
+                  {t("contact.sentTitle")}
                 </h3>
 
                 <p
@@ -183,8 +189,7 @@ export default function Contact() {
                     marginBottom: 24,
                   }}
                 >
-                  Thank you for contacting us. Our team will get back to you as
-                  soon as possible.
+                  {t("contact.sentText")}
                 </p>
 
                 <button
@@ -199,7 +204,7 @@ export default function Contact() {
                     });
                   }}
                 >
-                  Send another message
+                  {t("contact.another")}
                 </button>
               </div>
             ) : (
@@ -214,7 +219,7 @@ export default function Contact() {
                     marginBottom: 4,
                   }}
                 >
-                  Send us a message
+                  {t("contact.formTitle")}
                 </h3>
 
                 <div
@@ -226,7 +231,7 @@ export default function Contact() {
                   className="contact-form-grid"
                 >
                   <div>
-                    <label className="label">Full name</label>
+                    <label className="label">{t("contact.fullName")}</label>
                     <input
                       className="input-field"
                       type="text"
@@ -240,7 +245,7 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="label">Email</label>
+                    <label className="label">{t("contact.emailLabel")}</label>
                     <input
                       className="input-field"
                       type="email"
@@ -255,7 +260,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="label">Subject</label>
+                  <label className="label">{t("contact.subject")}</label>
                   <input
                     className="input-field"
                     type="text"
@@ -269,11 +274,11 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="label">Message</label>
+                  <label className="label">{t("contact.message")}</label>
                   <textarea
                     className="input-field"
                     rows="6"
-                    placeholder="Tell us how we can help you with your application"
+                    placeholder="Tell us how we can help with your travel preparation"
                     value={form.message}
                     required
                     onChange={(e) =>
@@ -290,10 +295,10 @@ export default function Contact() {
                   style={{ width: "100%", justifyContent: "center" }}
                 >
                   {loading ? (
-                    "Sending..."
+                    t("contact.sending")
                   ) : (
                     <>
-                      <FiSend size={15} /> Send message
+                      <FiSend size={15} /> {t("contact.send")}
                     </>
                   )}
                 </button>
@@ -312,8 +317,16 @@ export default function Contact() {
               grid-template-columns: 1fr !important;
             }
           }
+
+          @media (max-width: 560px) {
+            .contact-form-card {
+              padding: 24px 20px !important;
+              border-radius: 20px !important;
+            }
+          }
         `}</style>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FAKE_DOSSIERS } from "../services/dossiers";
 import {
@@ -24,63 +24,70 @@ import {
 
 const APPLICATIONS_LIST = Object.values(FAKE_DOSSIERS);
 
-const MONTHLY_DATA = [
-  { month: "Sep", applications: 28 },
-  { month: "Oct", applications: 35 },
-  { month: "Nov", applications: 42 },
-  { month: "Dec", applications: 38 },
-  { month: "Jan", applications: 55 },
-  { month: "Feb", applications: 61 },
-];
-
-const SERVICES_DATA = [
-  { name: "Schengen", value: 45 },
-  { name: "Passport", value: 30 },
-  { name: "U.S. Visa", value: 15 },
-  { name: "ETA / ESTA", value: 10 },
-];
-
 const STATUS_COLORS = {
   Pending: { bg: "#FFF7ED", color: "#C2410C", dot: "#F97316" },
   "In Progress": { bg: "#EFF6FF", color: "#1D4ED8", dot: "#3B82F6" },
   Completed: { bg: "#F0FDF4", color: "#15803D", dot: "#22C55E" },
 };
 
-const STATS_CARDS = [
-  {
-    label: "Total applications",
-    value: "127",
-    icon: <FiFileText size={20} />,
-    color: "var(--blue-600)",
-    bg: "var(--blue-50)",
-  },
-  {
-    label: "Completed",
-    value: "89",
-    icon: <FiCheckCircle size={20} />,
-    color: "#16A34A",
-    bg: "#F0FDF4",
-  },
-  {
-    label: "In progress",
-    value: "31",
-    icon: <FiLoader size={20} />,
-    color: "#2563EB",
-    bg: "#EFF6FF",
-  },
-  {
-    label: "Pending",
-    value: "7",
-    icon: <FiClock size={20} />,
-    color: "#D97706",
-    bg: "#FFFBEB",
-  },
-];
-
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [filterStatus, setFilterStatus] = useState("All");
   const [applications, setApplications] = useState(APPLICATIONS_LIST);
+
+  const byStatus = applications.reduce((acc, app) => {
+    acc[app.status] = (acc[app.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  const monthlyData = Object.entries(
+    applications.reduce((acc, app) => {
+      const [, month = "Unknown", year = ""] = app.createdAt.split("/");
+      const monthName =
+        month === "01" ? "Jan" : month === "02" ? "Feb" : `Month ${month}`;
+      const label = year ? `${monthName} ${year}` : monthName;
+      acc[label] = (acc[label] || 0) + 1;
+      return acc;
+    }, {}),
+  ).map(([month, count]) => ({ month, applications: count }));
+
+  const servicesData = Object.entries(
+    applications.reduce((acc, app) => {
+      acc[app.service] = (acc[app.service] || 0) + 1;
+      return acc;
+    }, {}),
+  ).map(([name, value]) => ({ name, value }));
+
+  const statsCards = [
+    {
+      label: "Total references",
+      value: applications.length,
+      icon: <FiFileText size={20} />,
+      color: "var(--blue-600)",
+      bg: "var(--blue-50)",
+    },
+    {
+      label: "Completed",
+      value: byStatus.Completed || 0,
+      icon: <FiCheckCircle size={20} />,
+      color: "#16A34A",
+      bg: "#F0FDF4",
+    },
+    {
+      label: "In progress",
+      value: byStatus["In Progress"] || 0,
+      icon: <FiLoader size={20} />,
+      color: "#2563EB",
+      bg: "#EFF6FF",
+    },
+    {
+      label: "Pending",
+      value: byStatus.Pending || 0,
+      icon: <FiClock size={20} />,
+      color: "#D97706",
+      bg: "#FFFBEB",
+    },
+  ];
 
   const filtered =
     filterStatus === "All"
@@ -95,6 +102,7 @@ export default function Dashboard() {
 
   return (
     <div
+      className="tm-dashboard-page"
       style={{
         padding: "40px 0 80px",
         background: "var(--gray-50)",
@@ -115,7 +123,7 @@ export default function Dashboard() {
           <div>
             <h1 style={{ fontSize: "1.8rem", marginBottom: 4 }}>Dashboard</h1>
             <p style={{ color: "var(--gray-600)", fontSize: 14 }}>
-              Welcome, <strong>{user?.nom}</strong> — overview of application
+              Welcome, <strong>{user?.nom}</strong> - overview of preparation
               activity
             </p>
           </div>
@@ -141,7 +149,7 @@ export default function Dashboard() {
             marginBottom: 36,
           }}
         >
-          {STATS_CARDS.map((s, i) => (
+          {statsCards.map((s, i) => (
             <div
               key={i}
               style={{
@@ -221,10 +229,10 @@ export default function Dashboard() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              Monthly application volume
+              Monthly reference volume
             </h3>
             <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={MONTHLY_DATA}>
+              <LineChart data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--gray-200)" />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
@@ -256,10 +264,10 @@ export default function Dashboard() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              Applications by service
+              References by service
             </h3>
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={SERVICES_DATA} barSize={36}>
+              <BarChart data={servicesData} barSize={36}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--gray-200)" />
                 <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
@@ -295,7 +303,7 @@ export default function Dashboard() {
             }}
           >
             <h3 style={{ fontSize: 16, fontFamily: "var(--font-heading)" }}>
-              Application management
+              Reference management
             </h3>
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               <FiFilter size={14} color="var(--gray-500)" />
@@ -327,8 +335,11 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <div className="dashboard-table-wrap" style={{ overflowX: "auto" }}>
+            <table
+              className="dashboard-table"
+              style={{ width: "100%", borderCollapse: "collapse" }}
+            >
               <thead>
                 <tr style={{ background: "var(--gray-50)" }}>
                   {[
@@ -347,7 +358,7 @@ export default function Dashboard() {
                         fontSize: 12,
                         color: "var(--gray-500)",
                         textTransform: "uppercase",
-                        letterSpacing: "0.05em",
+                        letterSpacing: 0,
                         fontWeight: 700,
                       }}
                     >
@@ -425,9 +436,30 @@ export default function Dashboard() {
         </div>
 
         <style>{`
+          .dashboard-table-wrap {
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .dashboard-table tbody tr:hover {
+            background: rgba(57, 103, 159, 0.035);
+          }
+
+          .dashboard-table th,
+          .dashboard-table td {
+            white-space: nowrap;
+          }
+
           @media (max-width: 960px) {
             .charts-grid {
               grid-template-columns: 1fr !important;
+            }
+          }
+
+          @media (max-width: 680px) {
+            .dashboard-table th,
+            .dashboard-table td {
+              padding-left: 14px !important;
+              padding-right: 14px !important;
             }
           }
         `}</style>

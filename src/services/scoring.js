@@ -1,4 +1,4 @@
-﻿export function calculerScoreVisa(form) {
+export function calculerScoreVisa(form) {
   let score = 0;
   const recommandations = [];
   const pointsForts = [];
@@ -8,7 +8,7 @@
   if (rev >= 3000) {
     score += 25;
     pointsForts.push(
-      "Strong monthly income — this helps demonstrate financial capacity for the application.",
+      "Strong monthly income - this helps demonstrate financial capacity for the preparation file.",
     );
   } else if (rev >= 1500) {
     score += 15;
@@ -18,7 +18,7 @@
   } else {
     score += 5;
     recommandations.push(
-      "Income may be insufficient for the selected destination. Consider adding stronger financial support documents.",
+      "Income may be insufficient for the selected destination. Consider adding stronger financial support evidence.",
     );
   }
 
@@ -27,7 +27,7 @@
   if (voyages >= 5) {
     score += 20;
     pointsForts.push(
-      "Strong travel history — previous trips can help support the credibility of your application.",
+      "Strong travel history - previous trips can help support the credibility of your preparation file.",
     );
   } else if (voyages >= 2) {
     score += 12;
@@ -50,7 +50,7 @@
   } else if (form.emploi === "Self-employed") {
     score += 14;
     recommandations.push(
-      "As a self-employed applicant, consider adding financial records and business registration documents.",
+      "As a self-employed applicant, consider adding financial records and business registration evidence.",
     );
   } else if (form.emploi === "Temporary") {
     score += 10;
@@ -60,36 +60,36 @@
   } else if (form.emploi === "Student") {
     score += 8;
     recommandations.push(
-      "As a student, you may need enrollment documents and financial support evidence.",
+      "As a student, you may need enrollment proof and financial support evidence.",
     );
   } else if (form.emploi === "Retired") {
     score += 8;
     recommandations.push(
-      "As a retired applicant, pension proof and financial documents may help support your application.",
+      "As a retired traveler, pension proof and financial evidence may help support your preparation file.",
     );
   } else {
     score += 3;
     recommandations.push(
-      "Your current profile may require stronger supporting documents to improve the application.",
+      "Your current profile may require stronger supporting evidence to improve the preparation file.",
     );
   }
 
-  // 4. Available documents (20 pts)
+  // 4. Available support items (20 pts)
   const nbDocs = (form.docs || []).length;
   if (nbDocs >= 5) {
     score += 20;
     pointsForts.push(
-      "Strong document preparation — your application appears well supported.",
+      "Strong support-item preparation - your file appears well supported.",
     );
   } else if (nbDocs >= 3) {
     score += 12;
     recommandations.push(
-      `You may still be missing ${8 - nbDocs} recommended document(s). Completing your file may strengthen your application.`,
+      `You may still be missing ${8 - nbDocs} recommended support item(s). Completing your file may strengthen your preparation.`,
     );
   } else {
     score += 4;
     recommandations.push(
-      "Your file appears incomplete. Missing documents can significantly weaken an application.",
+      "Your file appears incomplete. Missing support items can significantly weaken readiness.",
     );
   }
 
@@ -114,22 +114,22 @@
     niveau = "Excellent";
     couleur = "#16A34A";
     conseil =
-      "Your application profile looks strong. You can move forward with confidence.";
+      "Your preparation profile looks strong. You can move forward with confidence.";
   } else if (scoreTotal >= 55) {
     niveau = "Good";
     couleur = "#2563EB";
     conseil =
-      "Your profile is solid, but a few improvements could strengthen the application further.";
+      "Your profile is solid, but a few improvements could strengthen the preparation further.";
   } else if (scoreTotal >= 35) {
     niveau = "Average";
     couleur = "#D97706";
     conseil =
-      "Your application may need stronger supporting documents before submission.";
+      "Your file may need stronger supporting evidence before handoff.";
   } else {
     niveau = "Weak";
     couleur = "#DC2626";
     conseil =
-      "Your profile may face a high risk of rejection. Consider improving your supporting documents before applying.";
+      "Your profile may face a high risk of rejection. Consider improving your supporting evidence before moving forward.";
   }
 
   return {
